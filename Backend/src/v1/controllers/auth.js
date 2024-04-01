@@ -74,10 +74,49 @@ const login = async (req, res) => {
     }, token });
   } catch (error) {
     console.error(error);
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
+
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+}
+
+const updateUser = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const user = await User.findByIdAndUpdate(
+      id, 
+      {$set: {...req.body}}, 
+      {new: true}
+    ).select("-password");
+    return res.status(200).json(user)
+  } catch (error) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+}
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    return res.status(200).json(users)
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json(error);
+  }
+}
+
 module.exports = {
   register,
-  login
+  login,
+  getUser,
+  updateUser,
+  getAllUsers
 };
