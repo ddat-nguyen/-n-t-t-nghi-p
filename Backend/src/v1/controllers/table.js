@@ -44,6 +44,23 @@ const getTables = async (req, res) => {
     }
 }
 
+const getTableById = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const table = await Table.findById(id);
+        if (!table) {
+            return res.status(404).json({ message: "Table not found" });
+        }
+        return res.status(200).json({
+            success: true,
+            table
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 const updateTableById = async (req, res) => {
     try {
         const {id} = req.params;
@@ -98,5 +115,6 @@ module.exports = {
     createTable,
     updateTableById,
     deleteTableById,
-    getTables
+    getTables,
+    getTableById
 }
