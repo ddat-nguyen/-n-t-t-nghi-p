@@ -7,6 +7,7 @@ const createTable = async (req, res) => {
             capacity
         })
         await newTable.save();
+
         return res.status(201).json({
             success: true,
             table: newTable,
@@ -34,12 +35,14 @@ const getTables = async (req, res) => {
                 }
             ]
         });
+
         return res.status(200).json({
             success: true,
             tables
         })
     } catch (error) {
         console.error(error);
+        
         return res.status(500).json({ message: "Internal server error" });
     }
 }
@@ -51,13 +54,14 @@ const getTableById = async (req, res) => {
         if (!table) {
             return res.status(404).json({ message: "Table not found" });
         }
+        
         return res.status(200).json({
             success: true,
-            table
+            data: table
         })
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
 
@@ -82,7 +86,8 @@ const updateTableById = async (req, res) => {
        
         return res.status(200).json({
             success: true,
-            table
+            message: "Table updated successfully",
+            data: table
         });
     } catch (error) {
         console.error(error);
@@ -100,13 +105,15 @@ const deleteTableById = async (req, res) => {
         }
 
         await table.deleteOne({_id: id})
+        
         return res.status(200).json({
             success: true,
             message: "Table deleted successfully", 
-            table
+            data: table
         })
     } catch (error) {
         console.error(error);
+        
         return res.status(500).json({ message: "Internal server error" });
     }
 }
