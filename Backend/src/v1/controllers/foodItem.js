@@ -53,7 +53,34 @@ const createFoodItem = async (req, res) => {
   }
 }
 
+const updateFoodItem = async (req, res) => {
+  const {id} = req.params;
+  try {
+    const foodItem = await FoodItem.findById(id)
+    if (!foodItem) {
+      return res.status(404).json({
+        success: false, 
+        message: "Food item not found",
+      })
+    }
+    const data = await FoodItem.findByIdAndUpdate(id, {$set: {...req.body}}, {new: true})
+    
+    return res.status(200).json({
+      success: true,
+      message: "Updated food item",
+      data: data
+    })
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    })
+  }
+}
+
 module.exports = {
     getAllFoodItems,
-    createFoodItem
+    createFoodItem,
+    updateFoodItem
 }
