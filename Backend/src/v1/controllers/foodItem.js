@@ -79,8 +79,33 @@ const updateFoodItem = async (req, res) => {
   }
 }
 
+const deleteFoodItem = async (req, res) => {
+  const {id} = req.params
+  try {
+    const foodItem = await FoodItem.findByIdAndDelete(id);
+    if (!foodItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Food item not found"
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      data: foodItem._id,
+      message: "Food item deleted successfully"
+    })
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    })
+  }
+}
+
 module.exports = {
     getAllFoodItems,
     createFoodItem,
-    updateFoodItem
+    updateFoodItem, 
+    deleteFoodItem
 }
