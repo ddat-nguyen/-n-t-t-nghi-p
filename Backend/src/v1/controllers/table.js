@@ -20,8 +20,10 @@ const createTable = async (req, res) => {
 }
 
 const getTables = async (req, res) => {
+    const {page = 1, limit = 10 } = req.query
+
     try {
-        const tables = await Table.find().populate({
+        const tables = await Table.find().skip((page - 1) * limit).limit(limit).populate({
             path: "order",
             populate: [
                 {

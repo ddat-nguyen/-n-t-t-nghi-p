@@ -27,6 +27,23 @@ const createCategory = async (req, res) => {
     }
 }
 
+const getCategories = async (req, res) => {
+    const {page = 1, limit = 10} = req.query
+    try {
+        const categories = await Category.find().skip((page - 1) * limit).limit(limit).sort({position: 1});
+        return res.status(200).json({
+            success: true,
+            data: categories,
+        }) 
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 const updateCategory = async (req, res) => {
     const { id } = req.params;
 
@@ -84,4 +101,4 @@ const deleteCategory = async (req, res) => {
         });
     }
 }
-module.exports = { createCategory, updateCategory, deleteCategory }
+module.exports = { createCategory, updateCategory, deleteCategory, getCategories }
