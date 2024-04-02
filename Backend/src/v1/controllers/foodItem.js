@@ -1,4 +1,5 @@
 const FoodItem = require("../models/foodItem");
+const User = require("../models/user");
 
 const getAllFoodItems = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
@@ -103,9 +104,59 @@ const deleteFoodItem = async (req, res) => {
   }
 }
 
+const addWishList = async (req, res) => {
+  const {id} = req.params;
+  const userID = req.user._id;
+
+  try {
+    const foodItem = await FoodItem.findById(id);
+    if (!foodItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Food item not found",
+      })
+    }
+
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      })
+    }
+
+    if(user.wishlist.includes(id)) {
+      const index = user.wishlist.indexOf(id);
+      user.wishlist.splice(index, 1);
+      await user.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Food item removed from wishlist successfully",
+        data: user,
+      })
+    }
+
+    user.wishlist.push(id);
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Food item was added to wishlist",
+      data: user,
+    }) 
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    })
+  }
+}
 module.exports = {
     getAllFoodItems,
     createFoodItem,
     updateFoodItem, 
-    deleteFoodItem
+    deleteFoodItem,
+    addWishList
 }

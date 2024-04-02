@@ -1,9 +1,12 @@
-const { getAllFoodItems, createFoodItem, updateFoodItem, deleteFoodItem } = require('../controllers/foodItem');
+const { param } = require('express-validator');
+const { getAllFoodItems, createFoodItem, updateFoodItem, deleteFoodItem, addWishList } = require('../controllers/foodItem');
 const {verifyToken} = require('../middleware/tokenHandler');
+const { validate } = require('../middleware/validate');
 const router = require('express').Router();
 router.get("/", getAllFoodItems);
 
-router.put("/:id", verifyToken, updateFoodItem);
-router.post("/", verifyToken, createFoodItem);
-router.delete("/:id", verifyToken, deleteFoodItem);
+router.put("/:id", verifyToken,param("id").isMongoId().withMessage("Invalid food item id"), validate, updateFoodItem);
+router.post("/", verifyToken, validate,createFoodItem);
+router.post("/:id/wishlist",verifyToken,param("id").isMongoId().withMessage("Invalid food item id"), validate, addWishList)
+router.delete("/:id", verifyToken, param("id").isMongoId().withMessage("Invalid food item id"), validate, deleteFoodItem);
 module.exports = router
