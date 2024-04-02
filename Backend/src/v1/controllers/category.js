@@ -54,4 +54,34 @@ const updateCategory = async (req, res) => {
         })
     }
 }
-module.exports = { createCategory, updateCategory }
+
+const deleteCategory = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const category = await Category.findById(id);
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found",
+            }); 
+        }
+        const data = await Category.findByIdAndUpdate(id, {
+            $set: {
+                deleted: true
+            }
+        }, {new: true})
+        return res.status(200).json({
+            success: true, 
+            data: category._id,
+            message: "Category deleted"
+        })
+
+    } catch (error) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+module.exports = { createCategory, updateCategory, deleteCategory }
