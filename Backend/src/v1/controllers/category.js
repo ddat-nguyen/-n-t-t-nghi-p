@@ -44,6 +44,29 @@ const getCategories = async (req, res) => {
     }
 }
 
+const getCategoryById = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const category = await Category.findById(id)
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            data: category
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 const updateCategory = async (req, res) => {
     const { id } = req.params;
 
@@ -94,11 +117,11 @@ const deleteCategory = async (req, res) => {
         })
 
     } catch (error) {
-        console.error(err);
+        console.error(error);
         return res.status(500).json({
             success: false,
-            message: "Internal server error",
+            message: error.message,
         });
     }
 }
-module.exports = { createCategory, updateCategory, deleteCategory, getCategories }
+module.exports = { createCategory, updateCategory, deleteCategory, getCategories, getCategoryById }
