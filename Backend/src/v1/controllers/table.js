@@ -17,6 +17,33 @@ const createTable = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+const getTables = async (req, res) => {
+    try {
+        const tables = await Table.find().populate({
+            path: "order",
+            populate: [
+                {
+                    path: "items",
+                    populate: {
+                        path: "foodId",
+                    }
+                }, {
+                    path: "user_id",
+                    select: "username"
+                }
+            ]
+        });
+        return res.status(200).json({
+            success: true,
+            tables
+        })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 const updateTableById = async (req, res) => {
     try {
         const {id} = req.params;
@@ -70,5 +97,6 @@ const deleteTableById = async (req, res) => {
 module.exports = {
     createTable,
     updateTableById,
-    deleteTableById
+    deleteTableById,
+    getTables
 }
