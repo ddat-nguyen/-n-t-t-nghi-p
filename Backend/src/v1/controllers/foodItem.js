@@ -28,7 +28,32 @@ const getAllFoodItems = async (req, res) => {
   }
 };
 
+const createFoodItem = async (req, res) => {
+  const {name, description, price, category, image, quantity} = req.body;
+  try {
+    const foodItem = await FoodItem.create({
+      name, 
+      description,
+      price,
+      category,
+      image, 
+      quantity
+    })
+
+    return res.status(201).json({
+      success: true,
+      data: foodItem
+    })
+  } catch (error) {
+    console.error(err);
+    return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+    });
+  }
+}
 
 module.exports = {
-    getAllFoodItems
+    getAllFoodItems,
+    createFoodItem
 }
