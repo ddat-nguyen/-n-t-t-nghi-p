@@ -29,6 +29,29 @@ const getAllFoodItems = async (req, res) => {
   }
 };
 
+const getFoodItemById = async (req, res) => {
+  const {id} = req.params
+  try {
+    const foodItem = await FoodItem.findById(id)
+    if (!foodItem) {
+      return res.status(404).json({
+        success: false, 
+        message: "Food item not found",
+      })
+    } 
+    return res.status(200).json({
+      success: true,
+      data: foodItem
+    })
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+}
+
 const createFoodItem = async (req, res) => {
   const {name, description, price, category, image, quantity} = req.body;
   try {
@@ -158,5 +181,6 @@ module.exports = {
     createFoodItem,
     updateFoodItem, 
     deleteFoodItem,
+    getFoodItemById,
     addWishList
 }
