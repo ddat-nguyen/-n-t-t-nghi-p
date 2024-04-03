@@ -174,9 +174,63 @@ const likeReview = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+const dislikeReview = async (req, res) => {
+    try {
+        const {reviewID} = req.params;
+        const userID = req.user._id;
+
+        // check valid user
+        if(!userID) {
+            return res.status(404).json({
+                liked: false,
+                message: "User not found",
+            })
+        }
+
+        const review = await Review.findById(reviewID)
+        if (!review) {
+            return res.status(404).json({
+                message: "Review not found",
+            })
+        }
+
+        const isDisliked = review.dislikes.includes(userID);
+
+        // if user dislike -> un dislike
+        if(isDisliked) {
+            review.dislikes.pull(userID);
+            await review.save();
+            return res.status(200).json({
+                disliked: false,
+                message: "Remove dislike successfully",
+                data: review
+            })
+        }
+
+        // like -> unlike
+        if(review.likes.includes(userID)) {
+            review.likes.pull(userID);
+            await review.save();
+        }
+
+        review.dislikes.push(userID);
+        await review.save();
+
+        return res.status(200).json({
+            disliked: true,
+            message: "Dislike thành công",
+            review: review,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 module.exports = {
     createReview,
     getReviewByProduct,
     checkPurchaseStatus,
-    likeReview
+    likeReview,
+    dislikeReview
 }
