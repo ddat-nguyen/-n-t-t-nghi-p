@@ -74,6 +74,26 @@ const addToCart = async (req, res, next) => {
     }
 }
 
+const allCartItem = async (req, res, next) => {
+    try {
+        const userID = req.user;
+        const findUsersCart = await Cart.find({
+            userID,
+            status: "pending",
+        }).populate({
+            path: "foodID",
+            select: "name image price"
+        })
+
+        return res.status(200).json({
+            success: true,
+            data: findUsersCart
+        })
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = {
-    addToCart
+    addToCart,
+    allCartItem
 }
