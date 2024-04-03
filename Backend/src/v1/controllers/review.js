@@ -75,7 +75,59 @@ const getReviewByProduct = async (req, res) => {
         });
     }
 }
+
+const checkPurchaseStatus = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const userID = req.user._id;
+        if (!userID) {
+            return res.status(404).json({
+                purchased: false,
+                reviewed: false,
+                message: "User not found",
+            });
+        }
+        const foodItem = await FoodItem.findById(id);
+        if (!foodItem) {
+            return res.status(404).json({
+                message: "Food item not found"
+            })
+        }
+
+        const purchased = await Cart.findOne({
+            userID: userID,
+            foodID: id, 
+            status: "delivered",            
+        })
+        const isPurchased = !!purchased;
+
+        // check danh gia 
+        if(isPurchased) {
+            const review = await Review.findOne({
+                userID, 
+                foodItemID: id
+            });
+            if(review) {
+                return res.status(200).json({
+                    purchased: isPurchased,
+                    reviewed: true,
+                    message: "Purchased and reviewed"
+                })
+            }
+        }
+        return res.status(200).json({
+            purchased: isPurchased,
+            reviewed: false,
+            message: isPurchased ? "Purchased" : "Not purchased"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 module.exports = {
     createReview,
     getReviewByProduct,
+    checkPurchaseStatus
 }
