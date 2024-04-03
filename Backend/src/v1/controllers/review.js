@@ -1,6 +1,7 @@
 const FoodItem = require('../models/foodItem');
 const Review = require('../models/review');
 const User = require('../models/user');
+const Cart = require('../models/cart');
 
 const createReview = async (req, res) => {
     const {rating, comment} = req.body;
@@ -51,6 +52,30 @@ const createReview = async (req, res) => {
     }
 }
 
+const getReviewByProduct = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const foodItem = await FoodItem.findById(id);
+        if(!foodItem) {
+            return res.status(404).json({
+                success: false, 
+                message: "Product not found"
+            })
+        }
+
+        const reviews = await Review.find({id}).populate("userID", "username avatar").sort({createdAt: -1})
+        return res.status(200).json({
+            success: true,
+            data: reviews
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            message: "Internal server error" 
+        });
+    }
+}
 module.exports = {
-    createReview
+    createReview,
+    getReviewByProduct,
 }
