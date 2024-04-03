@@ -126,8 +126,57 @@ const checkPurchaseStatus = async (req, res) => {
     }
 }
 
+const likeReview = async (req, res) => {
+    try {
+        const {reviewID} = req.params
+        const userID = req.user._id;
+        if (!userID) {
+            return res.status(404).json({
+                liked: false,
+                message: "User not found",
+            })
+        }
+        const review = await Review.findById(reviewID);
+        if (!review) {
+            return res.status(404).json({
+                message: "This review not found"
+            });
+        }
+        const isLiked = review.likes.includes(userID);
+
+        // neu nguoi dung like thi unlike
+        if(isLiked) {
+            review.likes.pull(userID);
+            await review.save();
+            return res.status(200).json({
+                liked: false,
+                message: "Unlike successfully",
+                data: review,
+            })
+        }
+        
+        // neu nguoi dung da dislike thi un dislike
+        if (review.dislikes.includes(userID)) {
+            review.dislikes.pull(userID);
+            await review.save();
+        }
+
+        review.likes.push(userID);
+        await review.save();
+        
+        return res.status(200).json({
+            liked: true,
+            message: "Un disliked",
+            data: review,
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 module.exports = {
     createReview,
     getReviewByProduct,
-    checkPurchaseStatus
+    checkPurchaseStatus,
+    likeReview
 }
