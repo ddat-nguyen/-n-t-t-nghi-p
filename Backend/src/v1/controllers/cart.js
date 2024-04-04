@@ -126,8 +126,38 @@ const editCart = async (req, res, next) => {
         next(error);
     }
 };
+
+const removeFromCart = async (req, res, next) => {
+    try {
+        const userID = req.user._id; 
+        const findUsersCart = await Cart.find({userID: userID})
+        const foodItemRemove = req.params.id;
+        
+        const checkCart = findUsersCart.filter((eachItemInUseCart) => {
+            
+            return (
+                eachItemInUseCart._id.toString() === foodItemRemove.toString()
+            );
+        })
+
+        if (checkCart.length !== 0 && checkCart !== undefined && checkCart !== null ) {
+            await Cart.deleteOne({_id: checkCart[0]._id.toString()});
+            
+            return res.status(201).json({
+                success: true,
+                message: `Removed from cart`,
+                data: checkCart
+            })
+        }
+        
+        return res.status(200).json("looks like the item was not found");
+    } catch(error) {
+        next(error);
+    }
+}
 module.exports = {
     addToCart,
     allCartItem,
-    editCart
+    editCart,
+    removeFromCart
 };
