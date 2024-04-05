@@ -99,7 +99,10 @@ const editCart = async (req, res, next) => {
         const findCart = await Cart.findById(foodItemForUpdate);
 
         console.log(findCart.userID);
-        if (findCart.userID.toString() === userID.toString() && findCart.quantity.toString() !== newQuantity.toString()) {
+        if (
+            findCart.userID.toString() === userID.toString() &&
+            findCart.quantity.toString() !== newQuantity.toString()
+        ) {
             if (newQuantity <= 0 || null || undefined) {
                 return res.status(501).json({
                     success: false,
@@ -129,173 +132,228 @@ const editCart = async (req, res, next) => {
 
 const removeFromCart = async (req, res, next) => {
     try {
-        const userID = req.user._id; 
-        const findUsersCart = await Cart.find({userID: userID})
+        const userID = req.user._id;
+        const findUsersCart = await Cart.find({ userID: userID });
         const foodItemRemove = req.params.id;
-        
-        const checkCart = findUsersCart.filter((eachItemInUseCart) => {
-            
-            return (
-                eachItemInUseCart._id.toString() === foodItemRemove.toString()
-            );
-        })
 
-        if (checkCart.length !== 0 && checkCart !== undefined && checkCart !== null ) {
-            await Cart.deleteOne({_id: checkCart[0]._id.toString()});
-            
+        const checkCart = findUsersCart.filter((eachItemInUseCart) => {
+            return eachItemInUseCart._id.toString() === foodItemRemove.toString();
+        });
+
+        if (
+            checkCart.length !== 0 &&
+            checkCart !== undefined &&
+            checkCart !== null
+        ) {
+            await Cart.deleteOne({ _id: checkCart[0]._id.toString() });
+
             return res.status(201).json({
                 success: true,
                 message: `Removed from cart`,
-                data: checkCart
-            })
+                data: checkCart,
+            });
         }
-        
+
         return res.status(200).json("looks like the item was not found");
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
-}
+};
 
 const getMostOrderedFoodsToday = async (req, res, next) => {
     try {
         const today = new Date();
-        today.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0);
 
         const result = await Cart.aggregate([
             {
                 $match: {
                     userID: req.user._id,
-                    createdAt: {$gte: today},
-                    status: {$in: ["confirmed", "delivered"]}
+                    createdAt: { $gte: today },
+                    status: { $in: ["confirmed", "delivered"] },
                 },
             },
             {
                 $group: {
                     _id: "foodID",
-                    totalOrdered: {$sum: "$quantity"}
-                }
-            },
-            {
-                $lookup: {
-                    from: "fooditems", 
-                    localField:"_id",
-                    foreignField:"_id",
-                    as: "foodItem"
-                }
-            }, 
-            {
-                $sort: {totalOrdered: -1}
-            },
-            {
-                $limit: 10
-            }
-        ]);
-
-        return res.status(200).json({
-            success: true,
-            data: result
-        })
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getMostOrderedFoodsThisWeek = async (req, res, next) => {
-    try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-    
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDate()) // lay ngay dau tuan (Chu nhat la 0)
-
-        const result = await Cart.aggregate([
-            {
-                $match: {
-                    userID: req.user._id,
-                    createdAt: {$gte: startOfWeek},
-                    status: {$in: ["confirmed", "delivered"]},
+                    totalOrdered: { $sum: "$quantity" },
                 },
-            }, 
-            {
-                $group: {
-                    _id: "foodID", 
-                    totalOrdered: {$sum: "$quantity"}
-                }
-            }, 
+            },
             {
                 $lookup: {
                     from: "fooditems",
                     localField: "_id",
                     foreignField: "_id",
-                    as: "foodItem"
-                }
-            }, 
-            {
-                $sort: {totalOrdered: -1}
+                    as: "foodItem",
+                },
             },
             {
-                $limit: 10
-            }
-        ])
+                $sort: { totalOrdered: -1 },
+            },
+            {
+                $limit: 10,
+            },
+        ]);
 
         return res.status(200).json({
             success: true,
-            data: result
-        })
+            data: result,
+        });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
-const getMostOrderedFoodsTodayAdmin = async (req, res, next) => {
+const getMostOrderedFoodsThisWeek = async (req, res, next) => {
     try {
         const today = new Date();
-        today.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0);
 
-        if (req.user.role !== "admin") {
-            return res.status(400).json({
-                success: false,
-                message: "Not authorized to access"
-            })
-        }
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDate()); // lay ngay dau tuan (Chu nhat la 0)
+
         const result = await Cart.aggregate([
             {
                 $match: {
                     userID: req.user._id,
-                    createdAt: {$gte: today},
-                    status: {$in: ["confirmed", "delivered"]}
+                    createdAt: { $gte: startOfWeek },
+                    status: { $in: ["confirmed", "delivered"] },
                 },
             },
             {
                 $group: {
                     _id: "foodID",
-                    totalOrdered: {$sum: "$quantity"}
-                }
+                    totalOrdered: { $sum: "$quantity" },
+                },
             },
             {
                 $lookup: {
-                    from: "fooditems", 
-                    localField:"_id",
-                    foreignField:"_id",
-                    as: "foodItem"
-                }
-            }, 
-            {
-                $sort: {totalOrdered: -1}
+                    from: "fooditems",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "foodItem",
+                },
             },
             {
-                $limit: 10
-            }
+                $sort: { totalOrdered: -1 },
+            },
+            {
+                $limit: 10,
+            },
         ]);
 
         return res.status(200).json({
             success: true,
-            data: result
-        })
+            data: result,
+        });
     } catch (error) {
         next(error);
     }
-}
+};
+
+const getMostOrderedFoodsTodayAdmin = async (req, res, next) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (req.user.role !== "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "Not authorized to access",
+            });
+        }
+
+        const result = await Cart.aggregate([
+            {
+                $match: {
+                    userID: req.user._id,
+                    createdAt: { $gte: today },
+                    status: { $in: ["confirmed", "delivered"] },
+                },
+            },
+            {
+                $group: {
+                    _id: "foodID",
+                    totalOrdered: { $sum: "$quantity" },
+                },
+            },
+            {
+                $lookup: {
+                    from: "fooditems",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "foodItem",
+                },
+            },
+            {
+                $sort: { totalOrdered: -1 },
+            },
+            {
+                $limit: 10,
+            },
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getMostOrderedFoodsThisWeekAdmin = async (req, res, next) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDate()); // lay ngay dau tuan (Chu nhat la 0)
+        if (req.user.role !== "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "Not authorized to access",
+            });
+        }
+
+        const result = await Cart.aggregate([
+            {
+                $match: {
+                    userID: req.user._id,
+                    createdAt: { $gte: startOfWeek },
+                    status: { $in: ["confirmed", "delivered"] },
+                },
+            },
+            {
+                $group: {
+                    _id: "foodID",
+                    totalOrdered: { $sum: "$quantity" },
+                },
+            },
+            {
+                $lookup: {
+                    from: "fooditems",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "foodItem",
+                },
+            },
+            {
+                $sort: { totalOrdered: -1 },
+            },
+            {
+                $limit: 10,
+            },
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 module.exports = {
     addToCart,
     allCartItem,
@@ -303,5 +361,6 @@ module.exports = {
     removeFromCart,
     getMostOrderedFoodsToday,
     getMostOrderedFoodsThisWeek,
-    getMostOrderedFoodsTodayAdmin
+    getMostOrderedFoodsTodayAdmin,
+    getMostOrderedFoodsThisWeekAdmin
 };
