@@ -246,6 +246,56 @@ const getMostOrderedFoodsThisWeek = async (req, res, next) => {
         next(error)
     }
 }
+
+const getMostOrderedFoodsTodayAdmin = async (req, res, next) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0)
+
+        if (req.user.role !== "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "Not authorized to access"
+            })
+        }
+        const result = await Cart.aggregate([
+            {
+                $match: {
+                    userID: req.user._id,
+                    createdAt: {$gte: today},
+                    status: {$in: ["confirmed", "delivered"]}
+                },
+            },
+            {
+                $group: {
+                    _id: "foodID",
+                    totalOrdered: {$sum: "$quantity"}
+                }
+            },
+            {
+                $lookup: {
+                    from: "fooditems", 
+                    localField:"_id",
+                    foreignField:"_id",
+                    as: "foodItem"
+                }
+            }, 
+            {
+                $sort: {totalOrdered: -1}
+            },
+            {
+                $limit: 10
+            }
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: result
+        })
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = {
     addToCart,
     allCartItem,

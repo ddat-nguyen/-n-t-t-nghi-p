@@ -9,5 +9,6 @@ router.put("/:foodItemForUpdate/qty/:qty", verifyToken, editCart)
 router.delete("/:id", verifyToken, removeFromCart)
 router.get("/most-order-today", verifyToken, getMostOrderedFoodsToday)
 router.get("/most-order-week", verifyToken, getMostOrderedFoodsThisWeek)
+router.get("/most-order-today-admin", verifyToken, getMostOrderedFoodsTodayAdmin)
 
 module.exports = router
