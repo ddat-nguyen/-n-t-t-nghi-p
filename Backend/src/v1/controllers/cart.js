@@ -155,9 +155,55 @@ const removeFromCart = async (req, res, next) => {
         next(error);
     }
 }
+
+const getMostOrderedFoodsToday = async (req, res, next) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0)
+
+        const result = await Cart.aggregate([
+            {
+                $match: {
+                    userID: req.user._id,
+                    createdAt: {$gte: today},
+                    status: {$in: ["confirmed", "delivered"]}
+                },
+            },
+            {
+                $group: {
+                    _id: "foodID",
+                    totalOrdered: {$sum: "$quantity"}
+                }
+            },
+            {
+                $lookup: {
+                    from: "fooditems", 
+                    localField:"_id",
+                    foreignField:"_id",
+                    as: "foodItem"
+                }
+            }, 
+            {
+                $sort: {totalOrdered: -1}
+            },
+            {
+                $limit: 10
+            }
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: result
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     addToCart,
     allCartItem,
     editCart,
-    removeFromCart
+    removeFromCart,
+    getMostOrderedFoodsToday
 };
