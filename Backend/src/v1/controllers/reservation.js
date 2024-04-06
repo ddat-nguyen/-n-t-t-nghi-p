@@ -54,7 +54,7 @@ const getReservationByID = async (req, res, next) => {
 
 const createReservation = async (req, res, next) => {
     const { user, user_name, note, date, time, guests, phone } = req.body;
-    console.log(req.body);
+    
     try {
         const reservation = await Reservation.create({
             user,
@@ -66,6 +66,7 @@ const createReservation = async (req, res, next) => {
             phone,
             // status,
         });
+        
         return res.status(201).json({
             success: true,
             message: "Create reservation successfully",
@@ -78,6 +79,32 @@ const createReservation = async (req, res, next) => {
         });
     }
 };
+
+const updateReservation = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const reservation = await Reservation.findByIdAndUpdate(id, {$set: {...req.body}, }, {new: true});
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: "Reservation not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: false,
+            message: "Reservation successfully updated",
+            data: id,
+        });
+    } catch (error) {
+        console.log(error.message);
+        
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
 
 const deleteReservation = async (req, res) => {
     try {
@@ -92,6 +119,7 @@ const deleteReservation = async (req, res) => {
 
         return res.status(200).json({
             success: false,
+            message: "Reservation successfully deleted",
             data: id,
         });
     } catch (error) {
@@ -107,5 +135,6 @@ module.exports = {
     getAllReservations,
     getReservationByID,
     createReservation,
+    updateReservation,
     deleteReservation
 };
