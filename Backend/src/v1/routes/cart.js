@@ -1,4 +1,4 @@
-const { addToCart, allCartItem, editCart, removeFromCart, getMostOrderedFoodsToday, getMostOrderedFoodsThisWeek, getMostOrderedFoodsTodayAdmin, getMostOrderedFoodsThisWeekAdmin, getMostOrderedFoodsAllTime } = require('../controllers/cart');
+const { addToCart, allCartItem, editCart, removeFromCart, getMostOrderedFoodsToday, getMostOrderedFoodsThisWeek, getMostOrderedFoodsTodayAdmin, getMostOrderedFoodsThisWeekAdmin, getMostOrderedFoodsAllTime, getMostOrderedFoodsAllTimeAdmin } = require('../controllers/cart');
 const { verifyToken } = require('../middleware/tokenHandler');
 
 const router = require('express').Router();
@@ -13,5 +13,6 @@ router.get("/most-ordered-all-time", verifyToken, getMostOrderedFoodsAllTime);
 
 router.get("/most-order-today-admin", verifyToken, getMostOrderedFoodsTodayAdmin)
 router.get("/most-order-week-admin", verifyToken, getMostOrderedFoodsThisWeekAdmin)
+router.get("/most-ordered-all-time-admin", verifyToken, getMostOrderedFoodsAllTimeAdmin);
 
 module.exports = router
