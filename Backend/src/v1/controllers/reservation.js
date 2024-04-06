@@ -1,55 +1,59 @@
-const Reservation = require('../models/reservation');
+const Reservation = require("../models/reservation");
 
 const getAllReservations = async (req, res, next) => {
     try {
-        const reservations = await Reservation.find().sort({createdAt: -1}).populate({
-            path: "user",
-            select: "name"
-        })        
+        const reservations = await Reservation.find()
+            .sort({ createdAt: -1 })
+            .populate({
+                path: "user",
+                select: "name",
+            });
         return res.status(200).json({
             success: true,
-            data: reservations
-        })
+            data: reservations,
+        });
     } catch (error) {
         return res.status(500).json({
-            success: false, 
-            message: "Internal server error"
-        })
+            success: false,
+            message: "Internal server error",
+        });
     }
-}
+};
 
 const getReservationByID = async (req, res, next) => {
     try {
         const reservationID = req.params.id;
-        const reservation = await Reservation.findById(reservationID).populate({
-            path: "user",
-            select: "name"
-        }).populate({
-            path: "cart",
-            select: "name"
-        });
+        const reservation = await Reservation.findById(reservationID)
+            .populate({
+                path: "user",
+                select: "name",
+            })
+            .populate({
+                path: "cart",
+                select: "name",
+            });
 
         if (!reservation) {
             return res.status(404).json({
                 success: false,
-                message: "Reservation not found"
-            })
+                message: "Reservation not found",
+            });
         }
 
         return res.status(200).json({
             success: true,
-            data: reservation
-        })
+            data: reservation,
+        });
     } catch (error) {
         return res.status(500).json({
-            success: false, 
-            message: "Internal server error"
-        })
+            success: false,
+            message: "Internal server error",
+        });
     }
-}
+};
 
 const createReservation = async (req, res, next) => {
-    const {user, user_name, note, date, time, guests, phone} = req.body;
+    const { user, user_name, note, date, time, guests, phone } = req.body;
     console.log(req.body);
     try {
         const reservation = await Reservation.create({
@@ -69,14 +73,39 @@ const createReservation = async (req, res, next) => {
         });
     } catch (error) {
         return res.status(500).json({
-            success: false, 
-            message: "Internal server error"
-        })
+            success: false,
+            message: "Internal server error",
+        });
     }
-}
+};
 
+const deleteReservation = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const reservation = await Reservation.findByIdAndDelete(id);
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: "Reservation not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: false,
+            data: id,
+        });
+    } catch (error) {
+        console.log(error.message);
+        
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
 module.exports = {
     getAllReservations,
     getReservationByID,
-    createReservation
-}
+    createReservation,
+    deleteReservation
+};
