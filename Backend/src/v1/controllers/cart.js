@@ -251,6 +251,46 @@ const getMostOrderedFoodsThisWeek = async (req, res, next) => {
     }
 };
 
+const getMostOrderedFoodsAllTime = async (req, res, next) => {
+    try {
+        const result = await Cart.aggregate([
+            {
+                $match: {
+                    userID: req.user._id, 
+                    status: {$in: ["confirmed", "delivered"]},
+                }
+            },
+            {
+                $group: {
+                    _id: "$foodId", 
+                    totalOrdered: {$sum: "$quantity"},
+                }
+            }, 
+            {
+                $lookup: {
+                    from: "fooditems",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "foodItem"
+                }
+            },
+            {
+                $sort: {totalOrdered: -1},
+            }, 
+            {
+                $limit: 10
+            }
+        ])
+
+        return res.status(200).json({
+            success: true, 
+            data: result
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 const getMostOrderedFoodsTodayAdmin = async (req, res, next) => {
     try {
         const today = new Date();
@@ -354,6 +394,7 @@ const getMostOrderedFoodsThisWeekAdmin = async (req, res, next) => {
         next(error);
     }
 };
+
 module.exports = {
     addToCart,
     allCartItem,
@@ -362,5 +403,6 @@ module.exports = {
     getMostOrderedFoodsToday,
     getMostOrderedFoodsThisWeek,
     getMostOrderedFoodsTodayAdmin,
-    getMostOrderedFoodsThisWeekAdmin
+    getMostOrderedFoodsThisWeekAdmin,
+    getMostOrderedFoodsAllTime
 };
