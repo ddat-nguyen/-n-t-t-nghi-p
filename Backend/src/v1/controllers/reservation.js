@@ -47,7 +47,36 @@ const getReservationByID = async (req, res, next) => {
         })
     }
 }
+
+const createReservation = async (req, res, next) => {
+    const {user, user_name, note, date, time, guests, phone} = req.body;
+    console.log(req.body);
+    try {
+        const reservation = await Reservation.create({
+            user,
+            user_name,
+            date,
+            time,
+            note,
+            guests,
+            phone,
+            // status,
+        });
+        return res.status(201).json({
+            success: true,
+            message: "Create reservation successfully",
+            data: reservation,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false, 
+            message: "Internal server error"
+        })
+    }
+}
+
 module.exports = {
     getAllReservations,
-    getReservationByID
+    getReservationByID,
+    createReservation
 }
