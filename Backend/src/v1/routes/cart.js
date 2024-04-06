@@ -1,10 +1,11 @@
-const { addToCart, allCartItem, editCart, removeFromCart, getMostOrderedFoodsToday, getMostOrderedFoodsThisWeek, getMostOrderedFoodsTodayAdmin, getMostOrderedFoodsThisWeekAdmin, getMostOrderedFoodsAllTime, getMostOrderedFoodsAllTimeAdmin } = require('../controllers/cart');
+const { addToCart, allCartItem, editCart, removeFromCart, getMostOrderedFoodsToday, getMostOrderedFoodsThisWeek, getMostOrderedFoodsTodayAdmin, getMostOrderedFoodsThisWeekAdmin, getMostOrderedFoodsAllTime, getMostOrderedFoodsAllTimeAdmin, editMessage } = require('../controllers/cart');
 const { verifyToken } = require('../middleware/tokenHandler');
 
 const router = require('express').Router();
 
 router.get("/", verifyToken, allCartItem)
 router.post("/:id/:qty", verifyToken, addToCart)
+router.put("/:id/message/", verifyToken, editMessage);
 router.put("/:foodItemForUpdate/qty/:qty", verifyToken, editCart)
 router.delete("/:id", verifyToken, removeFromCart)
 router.get("/most-order-today", verifyToken, getMostOrderedFoodsToday)

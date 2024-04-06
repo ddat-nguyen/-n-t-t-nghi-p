@@ -442,10 +442,35 @@ const getMostOrderedFoodsAllTimeAdmin = async (req, res, next) => {
         next(error);
     }
 }
+
+const editMessage = async (req, res, next) => {
+    try {
+        const userID = req.user._id;
+        const foodItemToUpdate = req.params.id;
+
+        const findItem = await Cart.findById(foodItemToUpdate);
+
+        if (
+            findItem.userID.toString() == userID.toString() &&
+            findItem.message.toString() !== req.body.message.toString()
+        ) {
+            await findItem.updateOne({
+                message: req.body.message,
+            });
+            return res.status(201).json({
+                success: true,
+                message: `${findItem.foodID} message was updated to ${req.body.message}`,
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
 module.exports = {
     addToCart,
     allCartItem,
     editCart,
+    editMessage,
     removeFromCart,
     getMostOrderedFoodsToday,
     getMostOrderedFoodsThisWeek,
