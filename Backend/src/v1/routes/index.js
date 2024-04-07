@@ -7,4 +7,5 @@ router.use("/food-items", require('./foodItem'));
 router.use("/review", require("./review"));
 router.use("/cart", require('./cart'));
 router.use("/reservation", require('./reservation'));
+router.use("/order", require('./order'));
 module.exports = router
