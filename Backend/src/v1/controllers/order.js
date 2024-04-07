@@ -70,7 +70,29 @@ const getOrderByID = async (req, res, next) => {
     }
 }
 
+const getAllOrders = async (req, res, next) => {
+    try {
+        const page = 1;
+        const limit = 10;
+        const orders = await Order.find({user_id: req.user._id}).skip((page - 1) * limit).limit(10).populate({
+            path: "items",
+            populate: {
+                path: "foodID",
+                select: "name image price",
+            },
+        }).sort({ createdAt: -1 });;
+
+        return res.status(200).json({
+            success: true,
+            data: orders
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createOrder,
-    getOrderByID
+    getOrderByID, 
+    getAllOrders
 }
