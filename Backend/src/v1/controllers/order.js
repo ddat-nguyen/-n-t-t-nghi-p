@@ -91,8 +91,30 @@ const getAllOrders = async (req, res, next) => {
     }
 }
 
+const getLatest = async (req, res, next) => {
+    try {
+        const order = await Order.find({user_id: req.user._id}).populate({
+                path: "items",
+                populate: {
+                    path: "foodID",
+                    select: "name image price",
+                },
+            })
+            .sort({ createdAt: -1 })
+            .limit(1);
+
+        return res.status(200).json({
+            success: true,
+            data: order
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     createOrder,
     getOrderByID, 
-    getAllOrders
+    getAllOrders,
+    getLatest
 }
