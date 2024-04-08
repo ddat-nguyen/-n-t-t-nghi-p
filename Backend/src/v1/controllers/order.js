@@ -112,9 +112,29 @@ const getLatest = async (req, res, next) => {
     }
 };
 
+const getAllOrdersAdmin = async (req, res, next) => {
+    try {
+        const orders = await Order.find().populate({
+            path: "items",
+            populate: {
+                path: "foodID",
+                select: "name image price"
+            }
+        }).sort({createdAt: -1})
+
+        return res.status(200).json({
+            success: true,
+            data: orders
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createOrder,
     getOrderByID, 
     getAllOrders,
-    getLatest
+    getLatest, 
+    getAllOrdersAdmin
 }
