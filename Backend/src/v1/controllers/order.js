@@ -165,11 +165,61 @@ const updateOrderStatus = async (req, res, next) => {
     }
 }
 
+const getTopCustomersLastWeek = async (req, res, next) => {
+    try {
+        const pipeline = [
+            // Group the orders by user_id and calculate the total payment
+            {
+                $group: {
+                    _id: "$user_id",
+                    totalPayment: { $sum: "$total" },
+                    // tinh tong don hang
+                    totalOrders: { $sum: 1 },
+                    latestOrder: { $max: "$createdAt" },
+                },
+            },
+            // Lookup user information
+            {
+                $lookup: {
+                    from: "users", // Use the name of your User collection here
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            // Unwind the user array
+            { $unwind: "$user" },
+            // Sort by the latestOrder field
+            { $sort: { latestOrder: -1 } },
+            // Project the desired fields
+            {
+                $project: {
+                    _id: 0,
+                    username: "$user.username",
+                    profileImage: "$user.avatar", // Replace with the actual field name for profile image
+                    phone: "$user.phone",
+                    totalPayment: 1,
+                    totalOrders: 1,
+                    latestOrder: 1,
+                },
+            },
+        ];
+
+        const result = await Order.aggregate(pipeline);
+
+        return res.json(result);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Lỗi server" });
+    }
+};
+
 module.exports = {
     createOrder,
     getOrderByID, 
     getAllOrders,
     getLatest, 
     getAllOrdersAdmin,
-    updateOrderStatus
+    updateOrderStatus,
+    getTopCustomersLastWeek
 }
