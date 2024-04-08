@@ -2,6 +2,7 @@ const Cart = require('../models/cart');
 const foodItem = require('../models/foodItem');
 const Order = require('../models/order');
 const User = require('../models/user');
+const moment = require("moment");
 
 const createOrder = async (req, res, next) => {
     try {
@@ -214,6 +215,46 @@ const getTopCustomersLastWeek = async (req, res, next) => {
     }
 };
 
+
+const getOrderCountsByStatusThisWeek = async (req, res, next) => {
+    try {
+        const pipeline = [
+            // Filter orders that are created this week
+            {
+                $match: {
+                    createdAt: {
+                        $gte: moment().startOf("week").toDate(),
+                        $lte: moment().endOf("week").toDate(),
+                    },
+                },
+            },
+            // Group the orders by status and calculate the total payment
+            {
+                $group: {
+                    _id: "$status",
+                    count: { $sum: 1 },
+                },
+            },
+            // Project the desired fields
+            {
+                $project: {
+                    _id: 0,
+                    status: "$_id",
+                    count: 1,
+                },
+            },
+        ];
+
+        const result = await Order.aggregate(pipeline);
+
+        return res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
 module.exports = {
     createOrder,
     getOrderByID, 
@@ -221,5 +262,6 @@ module.exports = {
     getLatest, 
     getAllOrdersAdmin,
     updateOrderStatus,
-    getTopCustomersLastWeek
+    getTopCustomersLastWeek,
+    getOrderCountsByStatusThisWeek
 }
