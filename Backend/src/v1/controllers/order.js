@@ -1,4 +1,5 @@
 const Cart = require('../models/cart');
+const foodItem = require('../models/foodItem');
 const Order = require('../models/order');
 const User = require('../models/user');
 
@@ -131,10 +132,44 @@ const getAllOrdersAdmin = async (req, res, next) => {
     }
 }
 
+const updateOrderStatus = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const {status} = req.body;
+        const order = await Order.findByIdAndUpdate(id, {$set: {status}}, {new: true});
+
+        // if order status is delivered, update status of cart items to delivered
+        if (status === "delivered") {
+            await Cart.updateMany({_id: {$in: order.items}}, {$set: {status: "delivered"}})
+        }
+
+        if (status === "confirmed") {
+            const {item} = order;
+            items.forEach(async (item) => {
+                const {foodID, quantity} = await Cart.findById(item);
+                const {quantity: foodQuantity} = food;
+
+                await foodItem.findByIdAndUpdate( foodId,
+                    { $set: { quantity: foodQuantity - quantity } },
+                    { new: true });
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Order status updated successfully",
+            data: order,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createOrder,
     getOrderByID, 
     getAllOrders,
     getLatest, 
-    getAllOrdersAdmin
+    getAllOrdersAdmin,
+    updateOrderStatus
 }
