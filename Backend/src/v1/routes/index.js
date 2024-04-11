@@ -8,4 +8,5 @@ router.use("/review", require("./review"));
 router.use("/cart", require('./cart'));
 router.use("/reservation", require('./reservation'));
 router.use("/order", require('./order'));
+router.use("/comment", require("./comment"));
 module.exports = router
