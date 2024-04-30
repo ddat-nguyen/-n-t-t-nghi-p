@@ -24,10 +24,10 @@ import {
 } from "./pages";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import foodItemApi from "./api/foodItemApi";
+import foodItem from "./api/foodItem";
 import { setFoodItem } from "./redux/features/foodItemSlice";
 import { setCategory } from "./redux/features/categorySlice";
-import CategoryApi from "./api/categoryApi";
+import Category from "./api/category";
  // You can also use <link> for styles
 
 
@@ -37,7 +37,7 @@ function App() {
     useEffect(() => {
         const getFoodItems = async () => {
             try {
-                const res = await foodItemApi.getAll();
+                const res = await foodItem.getAll();
                 dispatch(setFoodItem(res));
             } catch (error) {
                 console.log(error);
@@ -45,7 +45,7 @@ function App() {
         };
         const getCategory = async () => {
             try {
-                const res = await CategoryApi.getAll();
+                const res = await Category.getAll();
                 dispatch(setCategory(res));
             } catch (error) {
                 console.log(error);
