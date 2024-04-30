@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
-import CategoryApi from "../../../../api/categoryApi";
+import CategoryApi from "../../../../api/category";
 import { setCategory } from "../../../../redux/features/categorySlice";
 import { HiPhotograph } from "react-icons/hi";
 import {

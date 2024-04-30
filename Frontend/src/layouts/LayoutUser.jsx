@@ -10,7 +10,7 @@ import authUtils from "../utils/authUtlis";
 import { setUser } from "../redux/features/userSlice";
 import Loading from "../components/Loading";
 import { USER_MENU } from "../assets/data";
-import CartApi from "../api/cartApi";
+import CartApi from "../api/cart";
 import { setCart } from "../redux/features/cartSlice";
 
 const LayoutUser = () => {

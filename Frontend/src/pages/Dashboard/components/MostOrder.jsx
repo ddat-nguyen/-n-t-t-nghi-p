@@ -1,7 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from "react";
-import adminApi from "../../../api/adminApi";
+import adminApi from "../../../api/admin";
 import { Link } from "react-router-dom";
 import MenuDropDown from "../../../components/MenuDropDown";
 import lottie from "lottie-web";

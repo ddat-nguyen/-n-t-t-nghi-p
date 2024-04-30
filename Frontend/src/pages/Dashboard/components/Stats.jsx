@@ -9,7 +9,7 @@ import {
     compareOrderUserPercentage,
 } from "../../../utils/adminUtlis";
 import { useEffect, useState } from "react";
-import adminApi from "../../../api/adminApi";
+import adminApi from "../../../api/admin";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 const Stats = () => {

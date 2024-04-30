@@ -3,7 +3,7 @@
 import Button from "../Button";
 import { useState } from "react";
 import Logo from "../../assets/images/LogoRestaurant.svg";
-import authApi from "../../api/authApi";
+import authApi from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
 

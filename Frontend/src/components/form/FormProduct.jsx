@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import CartApi from "../../api/cartApi";
+import CartApi from "../../api/cart";
 import { setCart } from "../../redux/features/cartSlice";
 import { HiFire } from "react-icons/hi";
 

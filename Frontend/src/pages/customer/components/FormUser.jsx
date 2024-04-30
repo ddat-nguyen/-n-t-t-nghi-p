@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import authApi from "../../../api/authApi";
+import authApi from "../../../api/auth";
 import { format } from "date-fns";
 import { setUser } from "../../../redux/features/userSlice";
 import {

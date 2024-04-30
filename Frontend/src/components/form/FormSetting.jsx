@@ -1,7 +1,7 @@
 /** @format */
 
 import { HiPhotograph } from "react-icons/hi";
-import foodItemApi from "../../api/foodItemApi";
+import foodItemApi from "../../api/foodItem";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";

@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import MenuDropDown from "../../../components/MenuDropDown";
-import adminApi from "../../../api/adminApi";
+import adminApi from "../../../api/admin";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

@@ -1,7 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from "react";
-import adminApi from "../../../api/adminApi";
+import adminApi from "../../../api/admin";
 import lottie from "lottie-web";
 import { defineElement } from "lord-icon-element"; // define "lord-icon" custom element with default properties
 defineElement(lottie.loadAnimation);

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { BiTrash } from "react-icons/bi";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import CartApi from "../api/cartApi";
+import CartApi from "../api/cart";
 import { setCart } from "../redux/features/cartSlice";
 import { toast } from "react-toastify";
 import { useState } from "react";

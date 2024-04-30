@@ -7,7 +7,7 @@ import CartContext from "../../context/cartContext";
 import { motion } from "framer-motion";
 import TableImg from "../../assets/images/table.png";
 import MenuDropDown from "../MenuDropDown";
-import tableApi from "../../api/tableApi";
+import tableApi from "../../api/table";
 import handleCheckout from "../../utils/checkOutUtils";
 import { useSelector } from "react-redux";
 

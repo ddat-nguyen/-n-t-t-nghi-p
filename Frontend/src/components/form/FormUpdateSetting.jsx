@@ -2,7 +2,7 @@
 
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import foodItemApi from "../../api/foodItemApi";
+import foodItemApi from "../../api/foodItem";
 import { AiFillStar, AiOutlineClose } from "react-icons/ai";
 import { Button } from "../index";
 import { FiDatabase, FiEdit } from "react-icons/fi";

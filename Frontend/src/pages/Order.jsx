@@ -2,7 +2,7 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { Button, OrderItem, ProgressChecking } from "../components";
 import { Fragment, useEffect, useState } from "react";
-import orderApi from "../api/orderApi";
+import orderApi from "../api/order";
 import lottie from "lottie-web";
 import { defineElement } from "lord-icon-element"; // define "lord-icon" custom element with default properties
 defineElement(lottie.loadAnimation);

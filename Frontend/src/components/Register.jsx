@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import Logo from "../assets/images/LogoRestaurant.svg";
 import { Dialog, Transition } from "@headlessui/react";
-import authApi from "../api/authApi";
+import authApi from "../api/auth";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 

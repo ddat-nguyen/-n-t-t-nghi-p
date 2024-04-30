@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import authUtils from "../utils/authUtlis";
 import { setUser } from "../redux/features/userSlice";
 import Loading from "../components/Loading";
-import tableApi from "../api/tableApi";
+import tableApi from "../api/table";
 import { setTable } from "../redux/features/tableSlice";
 
 const LayoutAdmin = () => {
