@@ -1,15 +1,27 @@
-const { createOrder, getOrderByID, getAllOrders, getLatest, getAllOrdersAdmin, updateOrderStatus, getTopCustomersLastWeek, getOrderCountsByStatusThisWeek } = require('../controllers/order');
-const { verifyToken } = require('../middleware/tokenHandler');
-const { validate } = require('../models/cart');
+/** @format */
 
-const route = require('express').Router();
+const router = require("express").Router();
+const { verifyToken } = require("../middleware/tokenHandler");
+const { validate } = require("../middleware/validate");
+const {
+    createOrder,
+    getAllOrders,
+    getAllOrdersAdmin,
+    getOrder,
+    updateOrderStatus,
+    getLatest,
+    getTopCustomersLastWeek,
+    getOrderCountsByStatusThisWeek
+} = require("../controllers/order");
 
-route.get("/", verifyToken, getAllOrders);
-route.post("/", verifyToken, createOrder);
-route.get("/latest", verifyToken, getLatest);
-route.get("/admin", verifyToken, getAllOrdersAdmin);
-route.get("/top-customers", verifyToken, getTopCustomersLastWeek);
-route.get("/counts-by-status", getOrderCountsByStatusThisWeek);
-route.get("/:id", verifyToken, validate, getOrderByID);
-route.put("/:id", verifyToken, updateOrderStatus);
-module.exports = route;
+router.post("/", verifyToken, createOrder);
+router.get("/", verifyToken, getAllOrders);
+router.get("/latest", verifyToken, getLatest);
+router.get("/admin", verifyToken, getAllOrdersAdmin);
+router.get("/top-customers", verifyToken, getTopCustomersLastWeek);
+router.get("/counts-by-status", getOrderCountsByStatusThisWeek);
+router.get("/:id", verifyToken, validate,  getOrder);
+router.put("/:id", verifyToken, validate, updateOrderStatus);
+
+
+module.exports = router;

@@ -1,9 +1,9 @@
+const router = require("express").Router();
+const { register, login, getUser, updateUser, getAllUsers } = require("../controllers/auth");
 const { body } = require("express-validator");
 const { validate } = require("../middleware/validate");
-const { register, login, updateUser, getUser, getAllUsers } = require("../controllers/auth");
-const User = require("../models/user");
 const { verifyToken } = require("../middleware/tokenHandler");
-const router = require("express").Router();
+const User = require("../models/user");
 
 router.post(
     "/signup",
@@ -41,26 +41,25 @@ router.post(
     login
 );
 
-// account me
 router.get("/user", verifyToken, getUser);
 
-// get all users
-router.get("/users", verifyToken, getAllUsers);
-
-// update user by id
 router.put(
     "/user/:id",
     verifyToken,
+    // if have new name, check if it is longer than 6 characters
     body("username")
         .optional()
         .isLength({ min: 6 })
         .withMessage("Username must be at least 6 characters long"),
+    // if have new email, check if it is valid
     validate,
     updateUser
 );
 
+router.get("/users", verifyToken, getAllUsers);
+
 router.post("/verify-token", verifyToken, (req, res) => {
-    return res.status(200).json(req.user);
+    res.status(200).json(req.user);
 });
 
 module.exports = router;

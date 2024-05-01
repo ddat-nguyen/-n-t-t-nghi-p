@@ -1,11 +1,19 @@
-const { createCategory, updateCategory, deleteCategory, getCategories, getCategoryById } = require('../controllers/category');
-const { verifyToken } = require('../middleware/tokenHandler');
+const router = require("express").Router();
+const { verifyToken } = require("../middleware/tokenHandler");
+const {
+    create,
+    getAll,
+    getById,
+    update,
+    remove,
+} = require("../controllers/category");
 
-const router = require('express').Router();
+router.post("/", verifyToken, create);
+router.get("/", getAll);
+router.get("/:id", getById);
+router.put("/:id", verifyToken, update);
+router.delete("/:id", verifyToken, remove);
 
-router.get("/", getCategories)
-router.get("/:id", verifyToken, getCategoryById)
-router.post("/",verifyToken, createCategory)
-router.put("/:id",verifyToken, updateCategory)
-router.delete("/:id", verifyToken, deleteCategory)
-module.exports = router
+
+
+module.exports = router;

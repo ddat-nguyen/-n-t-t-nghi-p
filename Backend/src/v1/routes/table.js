@@ -1,10 +1,19 @@
-const router = require('express').Router();
-const { createTable, updateTableById, deleteTableById, getTables, getTableById } = require('../controllers/table');
-const {verifyToken} = require('../middleware/tokenHandler');
+/** @format */
 
-router.get("/", getTables)
-router.get("/:id", verifyToken, getTableById)
+const router = require("express").Router();
+const { verifyToken } = require("../middleware/tokenHandler");
+const {
+    createTable,
+    getTables,
+    getTableById,
+    updateTableById,
+    deleteTableById,
+} = require("../controllers/table");
+
 router.post("/", verifyToken, createTable);
-router.put("/:id", verifyToken, updateTableById)
-router.delete("/:id", verifyToken, deleteTableById)
+router.get("/", getTables);
+router.get("/:tableId", getTableById);
+router.put("/:tableId", verifyToken, updateTableById);
+router.delete("/:tableId", verifyToken, deleteTableById);
+
 module.exports = router;
