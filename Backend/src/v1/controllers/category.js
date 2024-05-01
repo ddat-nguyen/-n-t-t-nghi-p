@@ -1,127 +1,122 @@
-const Category = require('../models/category');
+/** @format */
+const Category = require("../models/category");
+const FoodItem = require("../models/foodItem");
 
-const createCategory = async (req, res) => {
+const create = async (req, res) => {
     try {
-        const count = await Category.find().count();
-
-        const { name, description, image } = req.body;
-
+        const categoriesCount = await Category.find().count();
         const category = await Category.create({
-            name: name,
-            description: description,
-            image: image,
-            position: count > 0 ? count : 0,
-        })
-
-        return res.status(201).json({
+            position: categoriesCount > 0 ? categoriesCount : 0,
+        });
+        res.status(201).json({
             success: true,
-            message: 'Category created successfully',
-            data: category
-        })
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            success: false,
-            message: 'Error creating category',
-        })
-    }
-}
-
-const getCategories = async (req, res) => {
-    const {page = 1, limit = 10} = req.query
-    try {
-        const categories = await Category.find().skip((page - 1) * limit).limit(limit).sort({position: 1});
-        return res.status(200).json({
-            success: true,
-            data: categories,
-        }) 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
+            message: "Category created successfully",
+            data: category,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
     }
-}
+};
 
-const getCategoryById = async (req, res) => {
-    const {id} = req.params;
+const getAll = async (req, res) => {
     try {
-        const category = await Category.findById(id)
+        const categories = await Category.find().sort({ position: 1 });
+        res.status(200).json(categories);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
+const getById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const category = await Category.findById(id);
         if (!category) {
             return res.status(404).json({
                 success: false,
                 message: "Category not found",
             });
         }
-        return res.status(200).json({
-            success: true,
-            data: category
-        })
-    } catch (error) {
-        console.error(error);
+        res.status(200).json(category);
+    } catch (err) {
+        console.error(err);
         res.status(500).json({
-            success: false,
-            message: error.message
+            errors: [
+                {
+                    param: "server",
+                    msg: err.message || "Something went wrong!",
+                },
+            ],
         });
     }
-}
+};
 
-const updateCategory = async (req, res) => {
+const update = async (req, res) => {
     const { id } = req.params;
-
+    
     try {
-        const category = await Category.findById(id);
-        if (!category) {
-            return res.status(404).json({
-                success: false,
-                message: "Category not found"
-            })
-        }
-        await Category.findByIdAndUpdate(id,
-            { $set: { ...req.body } }, { new: true })
-        
-        return res.status(200).json({
-            success: true,
-            message: "Category updated successfully",
-            data: category,
-        })
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        })
-    }
-}
-
-const deleteCategory = async (req, res) => {
-    const {id} = req.params;
-    try {
-        const category = await Category.findById(id);
+        const category = await Category.findByIdAndUpdate(
+            id,
+            { $set: { ...req.body } },
+            { new: true }
+        );
         if (!category) {
             return res.status(404).json({
                 success: false,
                 message: "Category not found",
-            }); 
+            });
         }
-        const data = await Category.findByIdAndUpdate(id, {
-            $set: {
-                deleted: true
-            }
-        }, {new: true})
-        return res.status(200).json({
-            success: true, 
-            data: category._id,
-            message: "Category deleted"
-        })
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
+        res.status(200).json({
+            success: true,
+            message: "Category updated successfully",
+            data: category,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
-            message: error.message,
+            message: "Internal server error",
         });
     }
-}
-module.exports = { createCategory, updateCategory, deleteCategory, getCategories, getCategoryById }
+};
+
+
+
+const remove = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const category = await Category.findByIdAndRemove(id);
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found",
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Category deleted successfully",
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
+module.exports = {
+    create,
+    getAll,
+    getById,
+    update,
+    remove,
+};

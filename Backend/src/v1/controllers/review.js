@@ -1,236 +1,232 @@
-const FoodItem = require('../models/foodItem');
-const Review = require('../models/review');
-const User = require('../models/user');
-const Cart = require('../models/cart');
+/** @format */
 
+const Review = require("../models/review");
+const FoodItem = require("../models/foodItem");
+const Cart = require("../models/cart");
+
+// Tạo một đánh giá mới
 const createReview = async (req, res) => {
-    const {rating, comment} = req.body;
-    const {id} = req.params;
-    const userID = req.user._id;
+    const { rating, comment } = req.body;
+    const foodItemId = req.params.foodItemId;
+    const userId = req.user._id;
 
     try {
-        const foodItem = await FoodItem.findById(id);
+        const foodItem = await FoodItem.findById(foodItemId);
         if (!foodItem) {
-            return res.status(404).json({
-                success: false,
-                message: "food item not found"
-            }); 
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
 
-        const user = await User.findById(userID);
-        if (!user) {
+        // Kiểm tra xem người dùng
+        if (!userId) {
             return res.status(404).json({
                 success: false,
-                message: "user not found"
-            }); 
+                message: "Người dùng không tồn tại",
+            });
         }
 
         const newReview = new Review({
-            userID: userID,
-            foodItemID: id,
+            userId,
+            foodItemId,
             rating,
-            comment    
-        })
+            comment,
+        });
 
         await newReview.save();
-
-        // adding review to product 
+        // Thêm review vào sản phẩm
         foodItem.reviews.push(newReview._id);
         await foodItem.save();
 
-        // get user' info in return value
-        await newReview.populate("userID", "username avatar");
+        // tôi muốn kết quả trả về có thêm thông tin của người dùng
+        // nên tôi sẽ populate userId
+        await newReview.populate("userId", "username avatar");
 
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             rating: newReview,
-            message: "Added review" 
-        })
+            message: "Đánh giá thành công",
+        });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Lỗi server" });
     }
-}
+};
 
-const getReviewByProduct = async (req, res) => {
+// Lấy tất cả đánh giá của một sản phẩm
+const getReviewsByProduct = async (req, res) => {
     try {
-        const {id} = req.params;
-        const foodItem = await FoodItem.findById(id);
-        if(!foodItem) {
-            return res.status(404).json({
-                success: false, 
-                message: "Product not found"
-            })
+        const foodItemId = req.params.foodItemId;
+        const foodItem = await FoodItem.findById(foodItemId);
+        if (!foodItem) {
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
 
-        const reviews = await Review.find({id}).populate("userID", "username avatar").sort({createdAt: -1})
-        return res.status(200).json({
+        const reviews = await Review.find({ foodItemId })
+            .populate("userId", "username avatar")
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
             success: true,
-            data: reviews
-        })
+            reviews,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ 
-            message: "Internal server error" 
-        });
+        res.status(500).json({ message: "Lỗi server" });
     }
-}
+};
 
 const checkPurchaseStatus = async (req, res) => {
     try {
-        const {id} = req.params;
-        const userID = req.user._id;
-        if (!userID) {
+        const productId = req.params.productId;
+        const userId = req.user._id;
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!userId) {
             return res.status(404).json({
                 purchased: false,
                 reviewed: false,
-                message: "User not found",
+                message: "Người dùng không tồn tại",
             });
         }
-        const foodItem = await FoodItem.findById(id);
+        const foodItem = await FoodItem.findById(productId);
         if (!foodItem) {
-            return res.status(404).json({
-                message: "Food item not found"
-            })
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
 
         const purchased = await Cart.findOne({
-            userID: userID,
-            foodID: id, 
-            status: "delivered",            
-        })
+            userId: userId,
+            foodId: productId,
+            status: "delivered",
+        });
+
         const isPurchased = !!purchased;
 
-        // check danh gia 
-        if(isPurchased) {
+        // neu nguoi dung da mua hang thi xem ho da danh gia chua
+        if (isPurchased) {
             const review = await Review.findOne({
-                userID, 
-                foodItemID: id
+                userId: userId,
+                foodItemId: productId,
             });
-            if(review) {
+            if (review) {
                 return res.status(200).json({
                     purchased: isPurchased,
                     reviewed: true,
-                    message: "Purchased and reviewed"
-                })
+                    message: "Đã mua hàng và đã đánh giá",
+                });
             }
         }
-        return res.status(200).json({
+
+        res.status(200).json({
             purchased: isPurchased,
             reviewed: false,
-            message: isPurchased ? "Purchased" : "Not purchased"
+            message: isPurchased ? "Đã mua hàng" : "Chưa mua hàng",
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Lỗi server" });
     }
-}
+};
 
 const likeReview = async (req, res) => {
     try {
-        const {reviewID} = req.params
-        const userID = req.user._id;
-        if (!userID) {
+        const reviewId = req.params.reviewId;
+        const userId = req.user._id;
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!userId) {
             return res.status(404).json({
                 liked: false,
-                message: "User not found",
-            })
-        }
-        const review = await Review.findById(reviewID);
-        if (!review) {
-            return res.status(404).json({
-                message: "This review not found"
+                message: "Người dùng không tồn tại",
             });
         }
-        const isLiked = review.likes.includes(userID);
+        const review = await Review.findById(reviewId);
+        if (!review) {
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
+        }
 
-        // neu nguoi dung like thi unlike
-        if(isLiked) {
-            review.likes.pull(userID);
+        const isLiked = review.likes.includes(userId);
+
+        // neu nguoi dung da like thi unlike
+        if (isLiked) {
+            review.likes.pull(userId);
             await review.save();
             return res.status(200).json({
                 liked: false,
-                message: "Unlike successfully",
-                data: review,
-            })
+                message: "Unlike thành công",
+                review: review,
+            });
         }
-        
-        // neu nguoi dung da dislike thi un dislike
-        if (review.dislikes.includes(userID)) {
-            review.dislikes.pull(userID);
+
+        // neu nguoi dung da dislike thi undislike
+        if (review.dislikes.includes(userId)) {
+            review.dislikes.pull(userId);
             await review.save();
         }
 
-        review.likes.push(userID);
+        review.likes.push(userId);
         await review.save();
-        
-        return res.status(200).json({
+
+        res.status(200).json({
             liked: true,
-            message: "Un disliked",
-            data: review,
-        })
+            message: "Like thành công",
+            review: review,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Lỗi server" });
     }
 };
 
 const dislikeReview = async (req, res) => {
     try {
-        const {reviewID} = req.params;
-        const userID = req.user._id;
-
-        // check valid user
-        if(!userID) {
+        const reviewId = req.params.reviewId;
+        const userId = req.user._id;
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!userId) {
             return res.status(404).json({
                 liked: false,
-                message: "User not found",
-            })
+                message: "Người dùng không tồn tại",
+            });
         }
-
-        const review = await Review.findById(reviewID)
+        const review = await Review.findById(reviewId);
         if (!review) {
-            return res.status(404).json({
-                message: "Review not found",
-            })
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
         }
 
-        const isDisliked = review.dislikes.includes(userID);
+        const isDisliked = review.dislikes.includes(userId);
 
-        // if user dislike -> un dislike
-        if(isDisliked) {
-            review.dislikes.pull(userID);
+        // neu nguoi dung da dislike thi undislike
+        if (isDisliked) {
+            review.dislikes.pull(userId);
             await review.save();
             return res.status(200).json({
                 disliked: false,
-                message: "Remove dislike successfully",
-                data: review
-            })
+                message: "Undislike thành công",
+                review: review,
+            });
         }
 
-        // like -> unlike
-        if(review.likes.includes(userID)) {
-            review.likes.pull(userID);
+        // neu nguoi dung da like thi unlike
+        if (review.likes.includes(userId)) {
+            review.likes.pull(userId);
             await review.save();
         }
 
-        review.dislikes.push(userID);
+        review.dislikes.push(userId);
         await review.save();
 
-        return res.status(200).json({
+        res.status(200).json({
             disliked: true,
             message: "Dislike thành công",
             review: review,
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Lỗi server" });
     }
-}
+};
+
 module.exports = {
     createReview,
-    getReviewByProduct,
+    getReviewsByProduct,
     checkPurchaseStatus,
     likeReview,
-    dislikeReview
-}
+    dislikeReview,
+};

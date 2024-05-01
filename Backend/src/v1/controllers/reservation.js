@@ -1,29 +1,34 @@
-const Reservation = require("../models/reservation");
+/** @format */
 
-const getAllReservations = async (req, res, next) => {
+const mongoose = require("mongoose");
+const moment = require('moment');
+const Reservation = require("../models/reservation");
+const Table = require("../models/table");
+const Cart = require("../models/cart");
+const User = require("../models/user");
+
+const getAllReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .sort({ createdAt: -1 })
             .populate({
                 path: "user",
                 select: "name",
-            });
-        return res.status(200).json({
-            success: true,
-            data: reservations,
-        });
-    } catch (error) {
-        return res.status(500).json({
+            })
+        res.status(200).json(reservations);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
     }
 };
 
-const getReservationByID = async (req, res, next) => {
+const getReservationById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const reservationID = req.params.id;
-        const reservation = await Reservation.findById(reservationID)
+        const reservation = await Reservation.findById(id)
             .populate({
                 path: "user",
                 select: "name",
@@ -32,29 +37,25 @@ const getReservationByID = async (req, res, next) => {
                 path: "cart",
                 select: "name",
             });
-
         if (!reservation) {
             return res.status(404).json({
                 success: false,
                 message: "Reservation not found",
             });
         }
-
-        return res.status(200).json({
-            success: true,
-            data: reservation,
-        });
-    } catch (error) {
-        return res.status(500).json({
+        res.status(200).json(reservation);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
     }
 };
 
-const createReservation = async (req, res, next) => {
+const createReservation = async (req, res) => {
     const { user, user_name, note, date, time, guests, phone } = req.body;
-    
+
     try {
         const reservation = await Reservation.create({
             user,
@@ -66,14 +67,14 @@ const createReservation = async (req, res, next) => {
             phone,
             // status,
         });
-        
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             message: "Create reservation successfully",
-            data: reservation,
+            reservation,
         });
-    } catch (error) {
-        return res.status(500).json({
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
@@ -81,60 +82,63 @@ const createReservation = async (req, res, next) => {
 };
 
 const updateReservation = async (req, res) => {
+    const { id } = req.params;
+    const { user, user_name, date, time, guests, status } = req.body;
     try {
-        const {id} = req.params;
-        const reservation = await Reservation.findByIdAndUpdate(id, {$set: {...req.body}, }, {new: true});
-        if (!reservation) {
-            return res.status(404).json({
-                success: false,
-                message: "Reservation not found",
-            });
-        }
-
-        return res.status(200).json({
-            success: false,
-            message: "Reservation successfully updated",
-            data: id,
+        const reservation = await Reservation.findByIdAndUpdate(
+            id,
+            {
+                user,
+                user_name,
+                date,
+                time,
+                guests,
+                status,
+            },
+            { new: true }
+        );
+        res.status(200).json({
+            success: true,
+            message: "Update reservation successfully",
+            reservation,
         });
-    } catch (error) {
-        console.log(error.message);
-        
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    }
-}
-
-const deleteReservation = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const reservation = await Reservation.findByIdAndDelete(id);
-        if (!reservation) {
-            return res.status(404).json({
-                success: false,
-                message: "Reservation not found",
-            });
-        }
-
-        return res.status(200).json({
-            success: false,
-            message: "Reservation successfully deleted",
-            data: id,
-        });
-    } catch (error) {
-        console.log(error.message);
-        
-        return res.status(500).json({
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
     }
 };
+
+const deleteReservation = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const reservation = await Reservation.findByIdAndDelete(id);
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: "Reservation not found!",
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Reservation deleted successfully!",
+            data: reservation,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
 module.exports = {
     getAllReservations,
-    getReservationByID,
+    getReservationById,
     createReservation,
     updateReservation,
-    deleteReservation
+    deleteReservation,
 };
