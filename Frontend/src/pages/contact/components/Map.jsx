@@ -16,7 +16,7 @@ const Map = () => {
                         Chúng tôi ở đây
                     </h3>
                     <p className="inline-block text-xl">
-                        DT428, Tri Thuong, Phu Xuyen, Ha Noi, Viet Nam
+                        Hai Van Commnuce, Hai Hau District, Nam Dinh Province
                     </p>
                     <a
                         className="inline-block underline mt-4 hover:text-primary-color transition-colors duration-200"

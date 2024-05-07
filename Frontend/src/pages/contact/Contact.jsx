@@ -26,13 +26,13 @@ const Contact = () => {
                     <div className="w-full max-w-screen-sm">
                         <ContactInfoItem
                             icon={<MdLocalPhone />}
-                            text="+1 (123) 456-7890"
+                            text="+84 65 898 302"
                         />
                         <ContactInfoItem
                             icon={<MdEmail />}
-                            text="namnguyen7230@gmail.com"
+                            text="madoan709@gmail.com"
                         />
-                        <ContactInfoItem text="DT428, Tri Thuong, Phu Xuyen, Ha Noi, Viet Nam" />
+                        <ContactInfoItem text="Hai Van Commnuce, Hai Hau District, Nam Dinh Province" />
                     </div>
                     <div className="w-full max-w-screen-sm">
                         <ContactForm />

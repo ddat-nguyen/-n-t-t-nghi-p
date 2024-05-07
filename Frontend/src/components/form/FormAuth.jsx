@@ -96,10 +96,10 @@ const FormAuth = () => {
             err = true;
             setPasswordErrTextLogin("Please fill this field");
         }
-        if (err) return;
-        setLoading(true);
+        if (err) return
         try {
             const res = await authApi.login({ email, password });
+            console.log(res);
             setLoading(false);
             localStorage.setItem("token", res.token);
             navigate("/user/");

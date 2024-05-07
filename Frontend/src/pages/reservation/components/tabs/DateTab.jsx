@@ -55,7 +55,7 @@ const DateTab = ({ label, value, onChange, onSelectedTab }) => {
                     City, State 12345
                 </p>
                 <p className="text-gray-200 dark:text-slate-600">
-                    <span className="font-bold">Phone:</span> (123) 456-7890
+                    <span className="font-bold">Phone:</span> (+84) 65 898 302
                 </p>
                 {value !== null && (
                     <motion.div
