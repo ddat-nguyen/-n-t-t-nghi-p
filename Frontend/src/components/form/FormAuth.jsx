@@ -7,7 +7,7 @@ import authApi from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
 
-const FormAuth = () => {
+const FormAuth = ({setModalOpen}) => {
     const [isSignUpActive, setIsSignUpActive] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -118,9 +118,11 @@ const FormAuth = () => {
     };
     return (
         <div
-            className={`container mx-auto ${
+            className={`container mx-auto relative ${
                 isSignUpActive ? "right-panel-active" : ""
             }`}>
+            <button className="z-[100] absolute right-4 top-4 w-4 h-4" onClick={setModalOpen}>
+                <img src="../../assets/images/close-mini-1522-svgrepo-com.svg" alt="Close button" />            </button>
             <div className="form-container flex justify-center sign-up-container bg-base/dark-bg-2-14">
                 <form
                     onSubmit={handleRegister}
@@ -247,7 +249,8 @@ const FormAuth = () => {
                 </form>
             </div>
             <div className="overlay-container">
-                <div className="overlay">
+                <div className="overlay relative">
+                <button className="z-[100] absolute right-4 top-4 w-4 h-4" onClick={setModalOpen}>X</button>
                     <div className="overlay-panel overlay-left">
                         <h1 className="text-3xl font-bold">Chào mừng quý khách!</h1>
                         <em className="font-light  leading-5 tracking-wider my-20 mt-30">
