@@ -174,7 +174,7 @@ const FormProduct = ({ setModalOpen, foodDetail }) => {
                             <div className="flex justify-around items-center gap-2 mt-6">
                                 <div className="w-40 uppercase">
                                     <Button
-                                        btnText="thêm vào giỏ"
+                                        btnText="Thêm vào giỏ hàng"
                                         handler={() =>
                                             handleAddToCart(
                                                 foodDetail._id,
@@ -187,7 +187,7 @@ const FormProduct = ({ setModalOpen, foodDetail }) => {
                                 <Link
                                     to={`${location.pathname}product/${foodDetail._id}`}
                                     className="w-40">
-                                    <Button btnText="xem thêm" outline={true} />
+                                    <Button btnText="Xem thêm" outline={true} />
                                 </Link>
                                 {/* <div className="flex gap-2">
                                     <AiFillHeart className="text-xl text-red-600" />

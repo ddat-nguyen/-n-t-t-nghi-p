@@ -32,9 +32,7 @@ const LogIn = ({ handleSwitch }) => {
         }
 
         if (err) return;
-
         setLoading(true);
-
         try {
             const res = await authApi.login({ email, password });
             setLoading(false);
