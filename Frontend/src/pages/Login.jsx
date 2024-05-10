@@ -34,7 +34,7 @@ const Login = () => {
             <Modal
                 modalOpen={modalOpen}
                 setModalOpen={() => setModalOpen(false)}>
-                <FormAuth />
+                <FormAuth setModalOpen={() => {setModalOpen(false);}} />
             </Modal>
         </>
     );

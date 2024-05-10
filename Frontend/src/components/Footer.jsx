@@ -15,27 +15,32 @@ const Footer = () => {
                 </div>
                 <div className="flex-1">
                     <FooterCol
-                        heading="Important Links"
+                        heading=""
                         links={[
                             {
                                 type: "link",
-                                text: "Home",
-                                path: "/home",
+                                text: "Trang chủ",
+                                path: "/main",
                             },
                             {
                                 type: "link",
-                                text: "About",
+                                text: "Về chúng tôi",
                                 path: "/about",
                             },
                             {
                                 type: "link",
-                                text: "Projects",
+                                text: "Dự án",
                                 path: "/projects",
                             },
                             {
                                 type: "link",
-                                text: "Contact",
+                                text: "Liên hệ với chúng tôi",
                                 path: "/contact",
+                            },
+                            {
+                                type: "link",
+                                text: "Đặt bàn",
+                                path: "/reservation",
                             },
                         ]}
                     />

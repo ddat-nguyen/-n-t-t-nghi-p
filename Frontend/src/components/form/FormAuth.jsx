@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /** @format */
 
 import Button from "../Button";
@@ -6,7 +7,8 @@ import Logo from "../../assets/images/LogoRestaurant.svg";
 import authApi from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
-
+import { AiOutlineClose } from "react-icons/ai";
+import { toast } from "react-toastify";
 const FormAuth = ({setModalOpen}) => {
     const [isSignUpActive, setIsSignUpActive] = useState(false);
     const navigate = useNavigate();
@@ -99,20 +101,24 @@ const FormAuth = ({setModalOpen}) => {
         if (err) return
         try {
             const res = await authApi.login({ email, password });
-            console.log(res);
             setLoading(false);
             localStorage.setItem("token", res.token);
             navigate("/user/");
         } catch (err) {
-            const errors = err.data.errors;
-            errors.forEach((e) => {
-                if (e.path === "email") {
-                    setEmailErrTextLogin(e.msg);
-                }
-                if (e.path === "password") {
-                    setPasswordErrTextLogin(e.msg);
-                }
-            });
+            const errors = err.data;
+            if (!errors.success) {
+                toast.error("Tài khoản mật khẩu không chính xác", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                navigate("/login");
+            }
             setLoading(false);
         }
     };
@@ -121,8 +127,7 @@ const FormAuth = ({setModalOpen}) => {
             className={`container mx-auto relative ${
                 isSignUpActive ? "right-panel-active" : ""
             }`}>
-            <button className="z-[100] absolute right-4 top-4 w-4 h-4" onClick={setModalOpen}>
-                <img src="../../assets/images/close-mini-1522-svgrepo-com.svg" alt="Close button" />            </button>
+            <button type="button" className="z-[100] absolute right-4 top-4 w-4 h-4" onClick={() => setModalOpen(false)}><AiOutlineClose/></button>
             <div className="form-container flex justify-center sign-up-container bg-base/dark-bg-2-14">
                 <form
                     onSubmit={handleRegister}
@@ -250,7 +255,7 @@ const FormAuth = ({setModalOpen}) => {
             </div>
             <div className="overlay-container">
                 <div className="overlay relative">
-                <button className="z-[100] absolute right-4 top-4 w-4 h-4" onClick={setModalOpen}>X</button>
+                <button type="button" className="z-[100] absolute font-bold right-4 top-4 w-4 h-4" onClick={()=> setModalOpen(false)}><AiOutlineClose/></button>
                     <div className="overlay-panel overlay-left">
                         <h1 className="text-3xl font-bold">Chào mừng quý khách!</h1>
                         <em className="font-light  leading-5 tracking-wider my-20 mt-30">
