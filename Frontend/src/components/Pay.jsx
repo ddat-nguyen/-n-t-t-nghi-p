@@ -98,14 +98,14 @@ const Pay = () => {
                                 Orders #34562
                             </h2>
                             <span className="bg-primary-color rounded-md p-2 text-white max-w-min">
-                                Delivery
+                                Giao Hàng
                             </span>
                             <div className="flex justify-between w-full gap-6 font-semibold">
                                 <div className="flex justify-between w-full">
-                                    <span>Item</span>
-                                    <span>Qty</span>
+                                    <span>Sản phẩm</span>
+                                    <span>Số lượng</span>
                                 </div>
-                                <span>Price</span>
+                                <span>Giá</span>
                             </div>
                             <hr className="w-full h-[1px] bg-base/dark-line-1 border-0" />
                             <div className="flow-root">
@@ -138,12 +138,12 @@ const Pay = () => {
                             </div>
                             <div className="flex gap-3 w-full">
                                 <Button
-                                    btnText="Go Back"
+                                    btnText="Trở lại"
                                     outline={true}
                                     handler={togglePayment}
                                 />
                                 <Button
-                                    btnText="Pay Now"
+                                    btnText="Thanh toán ngay"
                                     handler={toggleCart}
                                 />
                             </div>

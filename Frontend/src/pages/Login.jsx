@@ -25,7 +25,7 @@ const Login = () => {
                         tabIndex={0}>
                         <AiFillGooglePlusCircle className="text-4xl dark:text-dark"/>
                         <div className="text-center whitespace-nowrap text-sm font-medium leading-[18.2px] text-white dark:text-dark w-[113px]">
-                            Log in with Google
+                            Log in
                         </div>
                     </button>
                 </div>

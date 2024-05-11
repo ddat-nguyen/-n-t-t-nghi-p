@@ -91,7 +91,7 @@ const ConfirmationOrder = () => {
                                                                 Xác Nhận Đơn
                                                                 Hàng
                                                                 <p className="text-sm font-normal pt-2 text-gray-400 dark:text-slate-600">
-                                                                    Order #34562
+                                                                    Order 
                                                                 </p>
                                                             </div>
                                                             <div className="flex items-center gap-2">

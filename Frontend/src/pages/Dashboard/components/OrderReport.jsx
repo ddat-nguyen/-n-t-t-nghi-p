@@ -76,10 +76,10 @@ const OrderReport = () => {
                                         {order.username}
                                     </div>
                                     <div className="flex-1 text-gray-400 dark:text-slate-600 text-center">
-                                        {order.totalOrders} đơn hàng
+                                        {order.totalOrders ? order.totalOrders : 0} đơn hàng
                                     </div>
                                     <div className="text-xl flex-1 font-bold text-gray-400 dark:text-slate-600 text-center">
-                                        ${order.totalPayment}
+                                        ${order.totalPayment ? order.totalPayment : 0}
                                     </div>
                                     <div className="flex flex-col items-center py-2 flex-1">
                                         <div

@@ -24,7 +24,7 @@ const Setting = () => {
     // Define the component based on the optionComponent value
     let componentToRender;
     if (optionComponent === "AboutUs") {
-        componentToRender = <AboutUs />;
+        componentToRender = <AboutUs/>;
     } else if (optionComponent === "ProductsManagement") {
         componentToRender = <ProductsManagement />;
     } else if (optionComponent === "Order") {

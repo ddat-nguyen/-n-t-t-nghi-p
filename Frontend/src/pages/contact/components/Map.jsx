@@ -20,7 +20,7 @@ const Map = () => {
                     </p>
                     <a
                         className="inline-block underline mt-4 hover:text-primary-color transition-colors duration-200"
-                        href="https://www.google.com/maps/place/DT+428,+Tr%E1%BB%8B+Thu%E1%BB%B7,+Ph%C3%BA+Xuy%C3%AAn,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@20.6837442,105.9566926,155m/data=!3m1!1e3!4m5!3m4!1s0x3135c86543197c49:0x5068c5544b2c2b88!8m2!3d20.6837111!4d105.9570022!5m1!1e4?hl=vi-VN"
+                        href="https://www.google.com/maps/place/91+%C4%90.+C%E1%BA%A7u+Di%E1%BB%85n,+Ph%C3%BAc+Di%E1%BB%85n,+B%E1%BA%AFc+T%E1%BB%AB+Li%C3%AAm,+H%C3%A0+N%E1%BB%99i,+Vi%E1%BB%87t+Nam/@21.0450679,105.7490562,17z/data=!3m1!4b1!4m6!3m5!1s0x313454ec1a00c13d:0x9911c6037af95f58!8m2!3d21.0450679!4d105.7516311!16s%2Fg%2F11fz95w480?entry=ttu"
                         target="_blank"
                         rel="noreferrer">
                         Open in Google Map
