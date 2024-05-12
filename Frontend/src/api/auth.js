@@ -21,6 +21,10 @@ const authApi = {
         const url = "/auth/verify-token";
         return axiosClient.post(url);
     },
+    changePassword: (param, data) => {
+        const url = `/auth/change-password/${param}`;
+        return axiosClient.post(url, data);
+    }   
 };
 
 export default authApi;

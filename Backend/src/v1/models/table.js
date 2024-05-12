@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const tableSchema = new mongoose.Schema({
     table_number: {
         type: Number, 
-        unique: true,
         required: true
     },
     order: {

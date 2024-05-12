@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { register, login, getUser, updateUser, getAllUsers } = require("../controllers/auth");
+const { register, login, getUser, updateUser, getAllUsers, changePassword } = require("../controllers/auth");
 const { body } = require("express-validator");
 const { validate } = require("../middleware/validate");
 const { verifyToken } = require("../middleware/tokenHandler");
@@ -61,5 +61,7 @@ router.get("/users", verifyToken, getAllUsers);
 router.post("/verify-token", verifyToken, (req, res) => {
     res.status(200).json(req.user);
 });
+
+router.post("/change-password/:id", verifyToken, changePassword);
 
 module.exports = router;

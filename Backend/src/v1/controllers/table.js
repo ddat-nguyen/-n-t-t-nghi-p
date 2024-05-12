@@ -3,12 +3,15 @@
 const Table = require("../models/table");
 
 const createTable = async (req, res) => {
-    const { name, status } = req.body;
+    const { table_number, status, capacity } = req.body;
+    console.log(req.body);
     try {
         const newTable = new Table({
-            name,
+            table_number,
             status,
+            capacity
         });
+
         await newTable.save();
         res.status(201).json({
             success: true,

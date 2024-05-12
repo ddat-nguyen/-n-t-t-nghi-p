@@ -49,6 +49,7 @@ const FormUser = () => {
         dispatch(
             setUser({ ...user, [name]: name === "avatar" ? avatar : value })
         );
+        
         timer = setTimeout(() => {
             authApi
                 .updateUser(user._id, {

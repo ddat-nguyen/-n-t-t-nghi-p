@@ -8,6 +8,7 @@ import { DeskContainer, ManagerForm } from "./components";
 const DeskManager = () => {
     const dispatch = useDispatch();
     const tables = useSelector((state) => state.table.value);
+    console.log("tables", tables);
     const [tableSelected, setTableSelected] = useState(null);
     console.log(tableSelected);
 

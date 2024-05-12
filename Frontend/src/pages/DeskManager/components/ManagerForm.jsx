@@ -172,7 +172,7 @@ const StatusBar = ({
     return (
         <div className="">
             <div className="flex justify-between">
-                <div>Số bàn trống: {status}</div>
+                <div>Số bàn: {status}</div>
                 <div>{((status / tableLength) * 100).toFixed(0) + "%"}</div>
             </div>
             <div className={`relative h-4 w-full bg-white rounded-md `}>

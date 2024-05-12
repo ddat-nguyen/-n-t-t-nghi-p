@@ -32,7 +32,7 @@ const Setting = () => {
     } else if (optionComponent === "Notifications") {
         componentToRender = <Notifications />;
     } else if (optionComponent === "Security") {
-        componentToRender = <Security />;
+        componentToRender = <Security/>;
     } else if (optionComponent === "CategoriesManagement") {
         componentToRender = <CategoriesManagement />;
     }
