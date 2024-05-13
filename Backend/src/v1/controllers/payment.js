@@ -161,7 +161,7 @@ const handleWebhook = async (req, res) => {
         eventType = req.body.type;
     }
     // Handle the checkout.session.completed event
-    if (eventType === "checkout.session.completed") {
+     
         console.log(`🔔  Payment received!`);
         stripe.customers
             .retrieve(data.customer)
@@ -171,14 +171,14 @@ const handleWebhook = async (req, res) => {
                         customer.metadata,
                         customer.phone
                     );
+                    
                     console.log(result);
                 } catch (err) {
                     console.log(err);
                 }
             })
             .catch((err) => console.log(err.message));
-    }
-
+            
     res.status(200).end();
 };
 
