@@ -48,7 +48,7 @@ const ManagerForm = ({
                                 }
                                 id="status">
                                 <option value="Available">Trống</option>
-                                <option value="Occupied" disabled>
+                                <option value="Occupied">
                                     Đang phục vụ
                                 </option>
                                 <option value="Reserved">Đã đặt trước</option>
@@ -147,9 +147,6 @@ const ManagerForm = ({
                             status={handleStatus("Closed")}
                             tableLength={tables.length}
                         />
-                        <span className="m-auto mt-12 text-4xl text-center">
-                            Chọn một bàn để xem thông tin
-                        </span>
                     </div>
                 )}
             </div>

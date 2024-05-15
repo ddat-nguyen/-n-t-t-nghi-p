@@ -27,7 +27,7 @@ const OrderReport = () => {
                 <div className="flex flex-col justify-between shrink-0 items-start">
                     <div className="self-stretch flex justify-between items-center">
                         <div className="text-2xl font-semibold text-white dark:text-dark">
-                            Thống kê người dùng
+                            Top Customer
                         </div>
                         <button className="border-solid border-dark dark:border-orange-200 border-2 self-start flex flex-row justify-center gap-2 h-12 items-center px-12 py-3 rounded-lg">
                             <div className="overflow-hidden bg-black/0 flex flex-col w-5 shrink-0 items-center p-px">

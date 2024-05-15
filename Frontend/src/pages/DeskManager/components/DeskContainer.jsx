@@ -63,7 +63,7 @@ const DeskItem = ({ tableItem, handleUpdate, setTableSelected }) => {
                         onChange={(e) => handleUpdate(e, tableItem._id)}
                         id="status">
                         <option value="Available">Trống</option>
-                        <option value="Occupied" disabled>
+                        <option value="Occupied">
                             Đang phục vụ
                         </option>
                         <option value="Reserved">Đã đặt trước</option>
