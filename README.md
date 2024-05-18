@@ -17,5 +17,3 @@ In the project directory, you can run:
     - Tailwind
     - Stripe
     - ...
-# Preview
-!["Full Stack Web Restaurant | React Node MongoDB Tailwind"](<Diagram - Food joint delivery app -  (Community) (Community).png>)"Full Stack Web Restaurant App | React Node MongoDB Tailwind")
