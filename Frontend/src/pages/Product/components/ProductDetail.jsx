@@ -139,7 +139,7 @@ const ProductDetail = ({
                                 <img
                                     src={product.image}
                                     alt=""
-                                    className="object-cover w-full h-full rounded-full shadow-3xl"
+                                    className="object-cover w-400 h-full rounded-full shadow-3xl"
                                 />
                             </div>
                             <div className="flex-1 flex flex-col items-center gap-6">

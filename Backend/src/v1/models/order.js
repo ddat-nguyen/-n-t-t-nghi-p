@@ -29,6 +29,7 @@ const orderSchema = new mongoose.Schema(
     phone: { type: String, required: true, trim: true },
     address: { type: String, trim: true },
     note: { type: String, default: "" },
+    username:  { type: String },
   },
   {
     toJSON: {

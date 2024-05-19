@@ -80,8 +80,14 @@ const Notification = () => {
                         <div className="text-sm font-semibold flex-1">
                             Tổng tiền
                         </div>
+                        <div className="text-sm font-semibold flex-1">
+                            Địa chỉ giao hàng
+                        </div>
                         <div className="text-sm font-semibold flex-1 text-center">
                             Trạng thái
+                        </div>
+                        <div className="text-sm font-semibold flex-1">
+                            Ngày tạo đơn
                         </div>
                     </div>
                     <hr className="w-full h-[2px] bg-base/dark-line-1 dark:bg-primary-color border-0 my-4" />
@@ -99,17 +105,20 @@ const Notification = () => {
                                                 <div className="flex shrink-0 items-center py-2 w-full relative">
                                                     <div className="text-xl font-semibold text-white dark:text-dark self-center flex-1">
                                                         #Orders{" "}
-                                                        {order._id.slice(0, 5)}
+                                                        {order._id.slice(0, 6)}
                                                     </div>
                                                     <div className="flex-1 text-gray-400 dark:text-slate-600">
                                                         #Customer{" "}
                                                         {order.user_id.slice(
                                                             0,
-                                                            5
+                                                            6
                                                         )}
                                                     </div>
                                                     <div className="text-xl flex-1 font-bold text-gray-400 dark:text-dark">
                                                         ${order.total}
+                                                    </div>
+                                                    <div className="flex-1 text-gray-400 dark:text-slate-600">
+                                                        {order.address}
                                                     </div>
                                                     <div className="flex flex-col items-center py-2 flex-1">
                                                         <div
@@ -125,6 +134,9 @@ const Notification = () => {
                                                                 `}>
                                                             {order.status}
                                                         </div>
+                                                    </div>
+                                                    <div className="flex-1 text-gray-400 dark:text-slate-600">
+                                                        {order.createdAt}
                                                     </div>
                                                     {/* icon */}
                                                     <button

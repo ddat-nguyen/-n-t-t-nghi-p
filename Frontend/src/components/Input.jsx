@@ -5,7 +5,6 @@ import { FiSearch } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-
 const Input = () => {
     const products = useSelector((state) => state.foodItem.value);
     const location = useLocation();
@@ -32,7 +31,7 @@ const Input = () => {
 
     return (
         <motion.div
-            className="relative rounded-md bg-base/dark-line h-12 min-w-[320px]"
+            className="relative rounded-md bg-base/dark-line z-50 h-12 min-w-[320px]"
             initial={{ opacity: 0, x: -20 }} // Initial animation values
             animate={{ opacity: 1, x: 0 }} // Animation properties
             transition={{ duration: 0.3 }} // Animation duration
@@ -50,12 +49,7 @@ const Input = () => {
                 value={searchTerm}
                 placeholder="Tìm kiếm sản phẩm"
                 onChange={handleSuggestions}
-                onBlur={() => {
-                    setTimeout(() => {
-                        setSuggestions([]);
-                    }, 100);
-                }}
-                onFocus={handleSuggestions}
+                // onFocus={handleSuggestions}
             />
             {suggestions.length > 0 && (
                 <motion.ul
@@ -75,7 +69,8 @@ const Input = () => {
                             hover={{ backgroundColor: "#1F2937" }}>
                             <Link
                                 to={`${location.pathname}product/${item._id}`}
-                                className="flex gap-2 py-2 px-1">
+                                className="flex gap-2 py-2 px-1"
+                                >
                                 <a
                                     className="h-[40px] block w-[40px]"
                                     aria-label="link-wrap-image">
@@ -87,7 +82,7 @@ const Input = () => {
                                 </a>
                                 <span>
                                     <p className="line-clamp-1">{item.name}</p>
-                                    <p>$ {item.price}</p>
+                                    <p>${item.price}</p>
                                 </span>
                             </Link>
                         </motion.li>
