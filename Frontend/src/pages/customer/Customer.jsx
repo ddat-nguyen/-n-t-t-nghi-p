@@ -74,20 +74,20 @@ const Customer = () => {
                             className="w-4 shrink-0"
                         />
                         <div className="text-sm font-medium">
-                            Filter Order
+                            <a href="">Filter Order</a>
                         </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-4">
                     <div className="text-sm font-semibold">
-                        Customer
+                        Đơn hàng
                     </div>
-                    <div className="text-sm font-semibold">Menu</div>
+                    <div className="text-sm font-semibold">Số lượng</div>
                     <div className="text-sm font-semibold">
-                        Total Payment
+                        Tổng tiền
                     </div>
                     <div className="text-sm font-semibold text-center">
-                        Status
+                        Trạng thái
                     </div>
                 </div>
                 <hr className="border-0 bg-base/dark-line h-[1px]" />
@@ -97,13 +97,17 @@ const Customer = () => {
                             key={order._id}
                             className="flex shrink-0 items-center py-2 w-full">
                             <div className="text-xl font-semibold self-center flex-1">
-                                #Orders {order._id.slice(0, 5)}
+                                #Order {order._id.slice(0, 6)}
                             </div>
                             <div className="flex-1 text-gray-400 dark:text-slate-600">
-                                {order.phone}
+                            {order.items.map((item, index) => (
+                                <div key={index}>
+                                    {item.quantity}
+                                </div>
+                            ))}
                             </div>
                             <div className="text-xl flex-1 font-bold text-gray-400 dark:text-slate-600">
-                                ${order.total}
+                                ${order.total}.000 VND
                             </div>
                             <div className="flex flex-col items-center py-2 flex-1">
                                 <div

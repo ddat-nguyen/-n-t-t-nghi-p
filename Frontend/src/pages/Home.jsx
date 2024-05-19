@@ -66,7 +66,7 @@ const Home = () => {
             </div>
             <div className="py-6 flex justify-between items-center">
                 <h1 className="text-xl font-bold dark:text-dark uppercase">
-                    Chọn {selectedType.name}
+                    Danh sách sản phẩm
                 </h1>
                 <div>
                     <MenuDropDown

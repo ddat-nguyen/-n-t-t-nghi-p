@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from "react";
 import adminApi from "../api/admin";
 import lottie from "lottie-web";
 import { defineElement } from "lord-icon-element"; // define "lord-icon" custom element with default properties
+import { format } from "date-fns";
 defineElement(lottie.loadAnimation);
 
 const Notification = () => {
@@ -136,7 +137,7 @@ const Notification = () => {
                                                         </div>
                                                     </div>
                                                     <div className="flex-1 text-gray-400 dark:text-slate-600">
-                                                        {order.createdAt}
+                                                        {format(new Date(order.createdAt), "d MMM yyyy")}
                                                     </div>
                                                     {/* icon */}
                                                     <button
