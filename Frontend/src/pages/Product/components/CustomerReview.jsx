@@ -57,7 +57,7 @@ const CustomerReview = ({
             rating,
             comment,
         };
-
+        
         try {
             const res = await reviewApi.create(foodId, data);
             console.log(res);

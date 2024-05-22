@@ -8,8 +8,9 @@ const Cart = require("../models/cart");
 const createReview = async (req, res) => {
     const { rating, comment } = req.body;
     const foodItemId = req.params.foodItemId;
+    console.log("Food ID: ", foodItemId);
     const userId = req.user._id;
-
+    console.log("User ID: ", userId);
     try {
         const foodItem = await FoodItem.findById(foodItemId);
         if (!foodItem) {
