@@ -15,8 +15,8 @@ const posts = [
         href: "#",
         description:
             "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-        date: "Mar 16, 2020",
-        datetime: "2020-03-16",
+        date: "Mar 16, 2024",
+        datetime: "2024-03-16",
         category: { title: "Marketing", href: "#" },
         author: {
             name: "Michael Foster",
@@ -32,8 +32,8 @@ const posts = [
         href: "#",
         description:
             "Optio cum necessitatibus dolor voluptatum provident commodi et. Qui aperiam fugiat nemo cumque.",
-        date: "Mar 10, 2020",
-        datetime: "2020-03-10",
+        date: "Mar 10, 2024",
+        datetime: "2024-03-10",
         category: { title: "Engineering", href: "#" },
         author: {
             name: "Brenna Goyette",
@@ -49,8 +49,8 @@ const posts = [
         href: "#",
         description:
             "Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis.",
-        date: "Feb 12, 2020",
-        datetime: "2020-02-12",
+        date: "Feb 12, 2024",
+        datetime: "2024-02-12",
         category: { title: "Product", href: "#" },
         author: {
             name: "Daniela Metz",
@@ -66,8 +66,8 @@ const posts = [
         href: "#",
         description:
             "Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis.",
-        date: "Feb 12, 2020",
-        datetime: "2020-02-12",
+        date: "Feb 12, 2024",
+        datetime: "2024-02-12",
         category: { title: "Product", href: "#" },
         author: {
             name: "Daniela Metz",
@@ -83,8 +83,8 @@ const posts = [
         href: "#",
         description:
             "Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis.",
-        date: "Feb 12, 2020",
-        datetime: "2020-02-12",
+        date: "Feb 12, 2024",
+        datetime: "2024-02-12",
         category: { title: "Product", href: "#" },
         author: {
             name: "Daniela Metz",
