@@ -42,7 +42,7 @@ const Stats = () => {
     return (
         <div className="flex gap-4">
             <StatsItem
-                title="Total Dish Ordered"
+                title="Total Revenue"
                 value={calculateWeeklyRevenue(orders)}
                 percentage={compareWeeklyRevenuePercentage(orders)}
                 icon="https://file.rendit.io/n/ZohrlxWTVRluOrWdfEKv.svg"
@@ -54,7 +54,7 @@ const Stats = () => {
                 icon="https://file.rendit.io/n/kr0zJxPaY9O41LPR7TOB.svg"
             />
             <StatsItem
-                title="Total Revenue"
+                title="Total Dish Ordered"
                 value={calculateOrderUser(orders)}
                 percentage={compareOrderUserPercentage(orders)}
                 icon="https://file.rendit.io/n/MFtFrvB9uIAIqOX1sM96.svg"

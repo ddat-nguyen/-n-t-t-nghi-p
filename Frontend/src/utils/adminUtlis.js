@@ -20,7 +20,7 @@ function calculateWeeklyRevenue(orders, weekOffset = 0) {
         0
     );
 
-    return weeklyRevenue;
+    return weeklyRevenue ;
 }
 
 function compareWeeklyRevenuePercentage(orders) {
