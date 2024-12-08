@@ -71,7 +71,7 @@ const getTableById = async (req, res) => {
 const updateTableById = async (req, res) => {
     try {
         const { tableId } = req.params;
-        const { name, status } = req.body;
+        const { status } = req.body;
         const table = await Table.findById(tableId);
         if (!table) {
             return res.status(404).json({ message: "Table not found" });
@@ -99,10 +99,10 @@ const deleteTableById = async (req, res) => {
         if (!table) {
             return res.status(404).json({ message: "Table not found" });
         }
-        await table.remove();
+        await table.deleteOne();
         res.status(200).json({
             success: true,
-            table,
+            table: table,
         });
     } catch (error) {
         console.error(error);

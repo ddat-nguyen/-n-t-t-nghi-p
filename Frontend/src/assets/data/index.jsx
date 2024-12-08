@@ -31,6 +31,7 @@ import { CgCreditCard } from "react-icons/cg";
 import { TbBrandPaypal } from "react-icons/tb";
 import { BiWalletAlt } from "react-icons/bi";
 import { AiFillContacts } from "react-icons/ai";
+
 export const links = [
     {
         id: 1,

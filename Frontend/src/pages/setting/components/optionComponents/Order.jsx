@@ -1,6 +1,6 @@
 
 const Order = () => {
-    return <div>Order</div>;
+    return <div>Authen user management</div>;
 };
 
 export default Order;

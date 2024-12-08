@@ -186,7 +186,7 @@ const getTopCustomersLastWeek = async (req, res, next) => {
                     totalPayment: { $sum: "$total" },
                     // tinh tong don hang
                     totalOrders: { $sum: 1 },
-                    latestOrder: { $max: "$createdAt" },
+                    // latestOrder: { $max: "$createdAt" },
                 },
             },
             // Lookup user information
@@ -201,7 +201,7 @@ const getTopCustomersLastWeek = async (req, res, next) => {
             // Unwind the user array
             { $unwind: "$user" },
             // Sort by the latestOrder field
-            { $sort: { latestOrder: -1 } },
+            // { $sort: { latestOrder: -1 } },
             // Project the desired fields
             {
                 $project: {
@@ -211,7 +211,7 @@ const getTopCustomersLastWeek = async (req, res, next) => {
                     phone: "$user.phone",
                     totalPayment: 1,
                     totalOrders: 1,
-                    latestOrder: 1,
+                    // latestOrder: 1,
                 },
             },
         ];

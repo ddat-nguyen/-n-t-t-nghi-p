@@ -18,7 +18,7 @@ const tableSchema = new mongoose.Schema({
         default: "Available"
     }
 }, {
-    toJSON: {
+    toJSON: {   
         virtuals: true,
     },
     toObject: {

@@ -31,8 +31,8 @@ const addComment = async (req, res) => {
     try {
         const newComment = new Comment({
             comment,
-            foodItemId,
-            userId,
+            foodItemID : foodItemId,
+            userID: userId,
         });
         await newComment.save();
         // them comment vao Review
@@ -51,6 +51,7 @@ const addComment = async (req, res) => {
             data: newComment,
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             success: false,
             message: "Internal server error",
@@ -82,9 +83,9 @@ const addReply = async (req, res) => {
     //create new reply
     try {
         const newReply = new Reply({
-            reply,
+            reply: reply,
             commentId,
-            userId,
+            userId: userId,
         });
         await newReply.save();
         // them reply vao comment
@@ -96,6 +97,7 @@ const addReply = async (req, res) => {
             data: newReply,
         });
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: "Internal server error",

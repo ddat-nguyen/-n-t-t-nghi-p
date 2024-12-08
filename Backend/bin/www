@@ -6,7 +6,7 @@
 
 const app = require('../app');
 const debug = require('debug')('backend:server');
-const http = require('http');
+const http = require('http'); // IMPORT LIBARIES
 const mongoose = require('mongoose')
 const dotenv = require('dotenv');
 dotenv.config();
@@ -15,7 +15,7 @@ dotenv.config();
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000'); // PORT 
 app.set('port', port);
 
 /**
@@ -26,14 +26,15 @@ const server = http.createServer(app);
 
 /**
  * Connect to Database 
+ * mongodb+srv://DatNguyen:<db_password>@cluster0.ps6vhrf.mongodb.net/restaurant?retryWrites=true&w=majority&appName=Cluster0
  */
 const connectString = `mongodb://${process.env.DEV_DB_HOST}:${process.env.DEV_DB_PORT}/${process.env.DEV_DB_NAME}`
 
 mongoose.connect(connectString).then(() => {
-  server.listen(port);
+  server.listen(port);          // server is listening on port local 
   server.on("error", onError);
   server.on("listening", onListening);
-  console.log(`Server is listening on port: ${process.env.PORT}`);
+  console.log(`Server is listening on port: ${port}`);
 })
 
 /**

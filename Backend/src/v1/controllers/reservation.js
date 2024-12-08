@@ -36,6 +36,7 @@ const getReservationById = async (req, res) => {
             .populate({
                 path: "cart",
                 select: "name",
+                strictPopulate: false,
             });
         if (!reservation) {
             return res.status(404).json({

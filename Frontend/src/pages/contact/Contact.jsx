@@ -16,23 +16,23 @@ const Contact = () => {
             <div className="max-w-screen-lg mx-auto">
                 <div className="flex flex-col items-center justify-center">
                     <h1 className="text-center text-7xl font-['DM_Serif_Display'] dark:text-black">
-                        Liên Hệ Với Chúng Tôi!
+                        Contact with us!
                     </h1>
                     <h3 className="text-center m-5 text-4xl max-w-lg font-['Barlow_Condensed'] text-gray-400 dark:text-slate-600">
-                        Sẵn sàng phục vụ bạn 24/7
+                        Ready to serve you 24/7
                     </h3>
                 </div>
                 <div className="flex gap-20 mt-28 justify-between relative after:content-[''] after:absolute after:top-1/3 after:left-1/2 after:w-1 after:h-2/3 after:bg-base/dark-line dark:after:bg-light-bg-1 after:-translate-x-1/2 after:-translate-y-1/2">
                     <div className="w-full max-w-screen-sm">
                         <ContactInfoItem
                             icon={<MdLocalPhone />}
-                            text="+84 65 898 302"
+                            text="+84 986469009"
                         />
                         <ContactInfoItem
                             icon={<MdEmail />}
-                            text="madoan709@gmail.com"
+                            text="nguyenducdat3008@gmail.com"
                         />
-                        <ContactInfoItem text="Hai Van Commnuce, Hai Hau District, Nam Dinh Province" />
+                        <ContactInfoItem text="69 Lac Long Quan, Nghia Do, Tay Ho, Ha Noi" />
                     </div>
                     <div className="w-full max-w-screen-sm">
                         <ContactForm />

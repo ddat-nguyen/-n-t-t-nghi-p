@@ -25,6 +25,7 @@ const authApi = {
         const url = `/auth/change-password/${param}`;
         return axiosClient.post(url, data);
     }   
+    // To do deleted api users 
 };
 
 export default authApi;

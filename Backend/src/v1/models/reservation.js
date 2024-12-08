@@ -8,6 +8,10 @@ const reservationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : "Cart"
+    },
     date: {
         type: Date, // booking time 
         required: true,

@@ -115,7 +115,7 @@ const getAllUsers = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const { id } = req.params;
-    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const { currentPassword, newPassword, confirmPassword } = req.body; //body to check password
 
     // Encrypt the current password input using bcrypt
     const user = await User.findById(id)
@@ -149,6 +149,8 @@ const changePassword = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+// To do deleted users
 
 module.exports = {
   register,

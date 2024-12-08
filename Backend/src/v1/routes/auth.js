@@ -41,8 +41,10 @@ router.post(
     login
 );
 
+// router to detail user 
 router.get("/user", verifyToken, getUser);
 
+// update user with user id 
 router.put(
     "/user/:id",
     verifyToken,
@@ -63,5 +65,8 @@ router.post("/verify-token", verifyToken, (req, res) => {
 });
 
 router.post("/change-password/:id", verifyToken, changePassword);
+
+
+// To do add api deleted users 
 
 module.exports = router;

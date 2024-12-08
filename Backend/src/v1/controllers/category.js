@@ -88,12 +88,10 @@ const update = async (req, res) => {
     }
 };
 
-
-
 const remove = async (req, res) => {
     const { id } = req.params;
     try {
-        const category = await Category.findByIdAndRemove(id);
+        const category = await Category.findByIdAndDelete(id);
         if (!category) {
             return res.status(404).json({
                 success: false,

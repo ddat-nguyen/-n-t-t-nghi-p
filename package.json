@@ -1,0 +1,11 @@
+{
+  "name": "datn_restaurants",
+  "version": "1.0.0",
+  "description": "In the project directory, you can run:\r ## *backend*\r ### `cd ./backend && npm install or yarn install`\r ### `npm start or yarn start`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

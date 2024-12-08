@@ -57,7 +57,7 @@ const LocationOrder = () => {
 
     return (
         <Transition
-            show={openLocation}
+            show={true}
             as={Fragment}
             enter="ease-in-out duration-150"
             enterFrom="w-0"
@@ -150,19 +150,19 @@ const LocationOrder = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="flex gap-3 px-6 mb-6 h-[48px]">
-                    <Button
+                    {/* <Button
                         btnText="Hủy Bỏ"
                         outline={true}
                         handler={() => {
                             toggleLocation();
                         }}
-                    />
-                    <Button
-                        btnText=" Thanh Toán"
+                    /> */}
+                    {/* <Button
+                        btnText=" Thanh Toánn"
                         handler={() => {
                             handleCheckout(cart, note, null, locationData);
                         }}
-                    />
+                    /> */}
                 </motion.div>
             </div>
         </Transition>

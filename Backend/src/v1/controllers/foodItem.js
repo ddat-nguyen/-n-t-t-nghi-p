@@ -120,6 +120,7 @@ const deleteFoodItem = async (req, res) => {
     }
 };
 
+// addWishList has purpose to response delete request or add new wish list from user
 const addWishList = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;

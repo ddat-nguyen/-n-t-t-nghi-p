@@ -11,6 +11,7 @@ require("dotenv").config();
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Tạo phiên thanh toán với Stripe
 const createCheckoutSession = async (req, res) => {
     const userId = req.user;
     const items = req.body.items;
@@ -18,30 +19,37 @@ const createCheckoutSession = async (req, res) => {
     console.log(req.body);
 
     const customer = await stripe.customers.create({
+         // Lưu địa chỉ vào metadata
         metadata: {
             userId: userId._id.toString(),
             carts: JSON.stringify(items),
-            address: address || null, // Lưu địa chỉ vào metadata
+            address: address || null, // nếu không có giá trị thì gán NUll
             table_id: table_id || null,
             note: note,
             total: total,
         },
     });
 
+// Line items đại diện cho 1 sản phẩm trong giỏ hàng. Stripe sẽ sử dụng các line_items này để cấu trúc thông tin
     const line_items = await Promise.all(
         items.map(async (item) => {
             // get data from id of cart item
             const res = await Cart.findById(item).populate("foodId");
 
+            const description = res.foodId.description && res.foodId.description.trim()
+            ? res.foodId.description
+            : "No description available"; // Giá trị mặc định nếu description trống hoặc không tồn tại
+
+
             return {
                 price_data: {
                     currency: "usd",
                     product_data: {
-                        name: res.foodId.name,
+                        name: res.foodId.name || "Unnamed Product",
                         images: [
                             "https://th.bing.com/th/id/OIP.YdFWs2fw6zI8w8KR0Ylt6AHaHa?pid=ImgDet&rs=1",
                         ],
-                        description: res.foodId.description,
+                        description: description,
                         metadata: {
                             userId: userId._id.toString(),
                             carts: JSON.stringify(items),
@@ -53,7 +61,7 @@ const createCheckoutSession = async (req, res) => {
                     },
                     unit_amount: res.foodId.price * 100,
                 },
-                quantity: res.quantity,
+                quantity: res.quantity || 1,
             };
         })
     );

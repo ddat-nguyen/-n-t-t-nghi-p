@@ -49,7 +49,7 @@ const Product = (props) => {
                     </h3>
                     <p className="text-sm font-light">$ {props.price}</p>
                     <p className="text-sm font-extralight text-light dark:text-slate-600">
-                        {props.quantity} Bát có sẵn
+                        {props.quantity} disk
                     </p>
                 </div>
                 <div className="w-full">

@@ -97,9 +97,7 @@ const Pay = () => {
                             <h2 className="text-xl font-semibold">
                                 Orders #34562
                             </h2>
-                            <span className="bg-primary-color rounded-md p-2 text-white max-w-min">
-                                Giao Hàng
-                            </span>
+                            
                             <div className="flex justify-between w-full gap-6 font-semibold">
                                 <div className="flex justify-between w-full">
                                     <span>Sản phẩm</span>
